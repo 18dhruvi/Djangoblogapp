@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    body{
+        background-color: rgb(75,74,74);
+        color: antiquewhite;
+    }
+</style>
+</head>
+<body>
+  <form role="form" method="POST">
+    {% csrf_token %}
+
+    {{post.as_p}}
+    <input type="submit" value="Edit" class="btn btn-primary">
+
+</form>
+</body>
+</html>

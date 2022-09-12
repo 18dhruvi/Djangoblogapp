@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+    background-color: rgb(75,74,74);
+    color: antiquewhite;
+}
+label{
+    display: block;
+}
+input{
+    padding: 4px 8px;
+    width: 50%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+
+}
+    </style>
+</head>
+<body><hr>
+    <div class="col-sm-10">
+        <h3 class="text-white">SIGNUP PAGE</h3>
+        {% for message in messages %}
+        <p>{{message}}</p>
+        {% endfor %}
+        
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Sign up</button>
+          </form>
+        {% comment %} <form action="{% url 'signup' %}" method="POST">
+            {% csrf_token %}
+            {% for fm in form  %}
+            {{fm.label_tag}} {{fm}} {{fm.errors|striptags}}
+            {% endfor %}
+
+            <input type="submit" value="Signup" class='btn btn-success'>
+
+            {% if form.non_fields_errors %}
+              {% for error in non_fields_errors %}
+              <p>{{error}}</p>
+              {% endfor %}
+            {% endif %}
+        </form> {% endcomment %}
+        </div>
+    </div>
+</body>
+</html>
+{% endblock content %}
