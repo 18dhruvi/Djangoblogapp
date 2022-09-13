@@ -14,8 +14,8 @@
     color: antiquewhite;
 }
     </style>
-    <h5>HELLO</h5>
 </head>
+<h5>HELLO</h5>
 <body><hr>
     <div class="col-sm-12">
         <h3 class="text-white">HOME PAGE</h3>
@@ -45,18 +45,19 @@
               </tr>
             </thead>
             <tbody>
-                {% for post in posts %}
-                <tr>
-                    <td>{{post.title}}</td>
-                    <td>{{post.username}}</td> 
-                    <td>{{post.desc}}</td> 
-                    <td>{{post.date}}</td> 
-                </tr>
-                {% endfor %}
-                </tbody>
+            {% for post in posts %}
+            <tr>
+                <td><a href="{% url 'title' post.id %}">{{post.title}}</td></a>
+                <td>{{post.user.username}}</td>
+                <td>{{post.desc}}</td> 
+                <td>{{post.date}}</td> 
+            </tr>
+            {% endfor %}
+            </tbody>
         </table>
-    </div>
-   
+    </div><br>
+    {% comment %} <p> USER DETAILS </p> {% endcomment %}
+    <a href="{% url 'details' %}">USER DETAILS</a>
 </body>
 </html>
 {% endblock content %}

@@ -15,10 +15,7 @@
 <body>
   <form role="form" method="POST">
     {% csrf_token %}
-
     {{post.as_p}}
-    <input type="submit" value="Edit" class="btn btn-primary">
-
 </form>
 </body>
 </html>

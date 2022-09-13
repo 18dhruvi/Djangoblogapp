@@ -39,7 +39,6 @@
             <td>{{one.desc}}</td>
             <td><a href="{% url 'delete' one.id %}"><button class="btn btn-danger"><i class="fa fa-trash"></i>DELETE</button></a>  </td>
             <td><a href="{% url 'edit' one.id %}"><button class="btn btn-warning"><i class="fa fa-trash"></i>Edit</button></a>  </td>
-           
             </tr>
             {% endfor %}
             </tbody>

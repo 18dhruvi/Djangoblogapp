@@ -8,8 +8,13 @@ from .models import *
 
 
 def home(request):
-    posts = Addpost.objects.all()
+    posts = Addpost.objects.all().order_by('-date')
     return render(request, 'home.html', {'posts': posts})
+
+
+def details(request):
+    conts = Contact.objects.all()
+    return render(request, 'details.html', {'conts': conts})
 
 
 def contacts(request):
@@ -19,7 +24,26 @@ def contacts(request):
                                country=request.POST['country'],
                                subject=request.POST['subject'])
         messages.success(request, 'MESSAGE SEND SUCCESSFULLY!!')
-    return render(request, 'contact.html')
+        return render(request, 'contact.html')
+    else:
+        return render(request, 'contact.html')
+
+# def contacts(request):
+#     if request.method == "POST":
+#         fname=request.POST['fname'],
+#         lname=request.POST['lname'],
+#         country=request.POST['country'],
+#         subject=request.POST['subject']
+
+#         student = Contact(fname=fname, lname=lname, country=country, subject=subject)
+#         student.save()
+
+#         student_details = Contact.objects.all()
+
+#         context = {
+#             'student_details' : student_details
+#         }
+#     return render(request, 'contact.html', {context})
 
 
 def dashboard(request):
@@ -66,6 +90,7 @@ def signupp(request):
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
+
 # def signupp(request):
 #     if request.method=='POST':
 #         form=SignUpForm(request.POST)
@@ -98,7 +123,7 @@ def loginn(request):
         return render(request, 'login.html', {'form': f})
     else:
         return HttpResponseRedirect('/login/')
-    
+
 
 def deletes(request, pk):
     uid = Addpost.objects.get(id=pk)
@@ -119,3 +144,18 @@ def editt(request, pk):
             return redirect('edit1')
     else:
         return render(request, 'edit1.html', {'post': post})
+
+
+def titledetail(request, pk):
+    blog = Addpost.objects.get(id=pk)
+    post = Addposts(instance=blog)
+    if request.method == 'POST':
+        post1 = Addposts(request.POST, instance=blog)
+        print(post1)
+        if post1.is_valid():
+            post1.save()
+            return redirect('dashboard')
+        else:
+            return redirect('title')
+    else:
+        return render(request, 'title.html', {'post': post})

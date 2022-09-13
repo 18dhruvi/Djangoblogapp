@@ -16,10 +16,10 @@ class Addpost(models.Model):
     date = models.DateTimeField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
-
 class Contact(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     fname = models.CharField(max_length=15)
     lname = models.CharField(max_length=15)
     country = models.CharField(max_length=15)
     subject = models.CharField(max_length=15)
-    
+
