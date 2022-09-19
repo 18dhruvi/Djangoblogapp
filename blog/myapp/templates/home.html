@@ -48,7 +48,8 @@
             {% for post in posts %}
             <tr>
                 <td><a href="{% url 'title' post.id %}">{{post.title}}</td></a>
-                <td>{{post.user.username}}</td>
+                <td><a href="{% url 'userdetails' post.id %}">{{post.user.username}}</td></a>
+                {% comment %} <td>{{post.user.username}}</td> {% endcomment %}
                 <td>{{post.desc}}</td> 
                 <td>{{post.date}}</td> 
             </tr>

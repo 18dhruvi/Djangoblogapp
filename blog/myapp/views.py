@@ -1,8 +1,9 @@
 from django.shortcuts import render, HttpResponseRedirect, redirect
-from .forms import SignUpForm, LoginForm, UserChangeForm, Addposts
+from .forms import SignUpForm, LoginForm, UserChangeForm, Addposts, ContactsForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import *
+# from django.core.paginator import paginator
 
 # Create your views here.
 
@@ -17,39 +18,32 @@ def details(request):
     return render(request, 'details.html', {'conts': conts})
 
 
-def contacts(request):
-    if request.method == 'POST':
-        Contact.objects.create(fname=request.POST['fname'],
-                               lname=request.POST['lname'],
-                               country=request.POST['country'],
-                               subject=request.POST['subject'])
-        messages.success(request, 'MESSAGE SEND SUCCESSFULLY!!')
-        return render(request, 'contact.html')
-    else:
-        return render(request, 'contact.html')
-
-# def contacts(request):
-#     if request.method == "POST":
-#         fname=request.POST['fname'],
-#         lname=request.POST['lname'],
-#         country=request.POST['country'],
-#         subject=request.POST['subject']
-
-#         student = Contact(fname=fname, lname=lname, country=country, subject=subject)
-#         student.save()
-
-#         student_details = Contact.objects.all()
-
-#         context = {
-#             'student_details' : student_details
-#         }
-#     return render(request, 'contact.html', {context})
-
-
 def dashboard(request):
-    msg = 'ADDED SUCCESSFULLY!!!!'
-    many = Addpost.objects.filter(user=request.user)
-    return render(request, 'dashboard.html', {'many': many})
+    data = Addpost.objects.filter(user=request.user)
+    return render(request, 'dashboard.html', {'data': data})
+
+
+def contact(request):
+    data = Contact.objects.all()
+    return render(request, 'contacts.html', {'data': data})
+
+
+def add_contact(request):
+    if request.method == 'POST':
+        data = ContactsForm(request.POST)
+        print(data)
+        if data.is_valid():
+            messages.success(request, 'CONGRAT SUCESSFULLY SIGNUP!!')
+            b = data.save()
+            # b.user = request.user
+            # b.save()
+            return redirect('contacts')
+        else:
+            messages.error(request, 'INVALID DATA!!')
+            return redirect('addcontact')
+    else:
+        data = ContactsForm()
+        return render(request, 'addcontact.html', {'data': data})
 
 
 def add_post(request):
@@ -159,3 +153,16 @@ def titledetail(request, pk):
             return redirect('title')
     else:
         return render(request, 'title.html', {'post': post})
+
+def userdetails(request, pk):
+    detail = Contact.objects.get(id=pk)
+    data = ContactsForm(instance=detail)
+    if request.method == 'POST':
+        data1 = ContactsForm(request.POST, instance=detail)
+        if data1.is_valid():
+            data1.save()
+            return redirect('contacts')
+        else:
+            return redirect('userdetails')
+    else:
+        return render(request, 'userdetails.html',{'data': data})

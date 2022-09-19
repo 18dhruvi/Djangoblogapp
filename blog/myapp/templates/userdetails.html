@@ -1,6 +1,3 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,11 +13,9 @@
 </style>
 </head>
 <body>
-      {% for message in messages %}
-      {% if message %}
-      <h5>{{message}}</h5>
-      {% endif %}
-      {% endfor %}
+  <form role="form" method="POST">
+    {% csrf_token %}
+    {{data.as_p}}
+</form>
 </body>
 </html>
-{% endblock %}

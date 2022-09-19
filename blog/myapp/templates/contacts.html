@@ -17,35 +17,33 @@
 </head>
 <body><hr><br>
     {% if request.user.is_authenticated %}
-
-    <h3>Dashboard</h3>
-            <h5>HELLO,
-                {{request.user}}</h5>
     <h4 style="color: aqua;">{{msg}}</h4>
-    <a href="{% url 'addpost' %}"><button class="btn btn-primary"><i class="fa fa-edit"></i>ADD POST</button></a> 
+    <a href="{% url 'addcontact' %}"><button class="btn btn-primary"><i class="fa fa-edit"></i>ADD CONTACT</button></a> 
        
     <table class="table text-white m-2">
         <thead>
           <tr>
-            <th scope="col">TITLE</th><br>
-            <th scope="col">DESCRIPTION</th><br>
-            <th colspan="2" scope="col" class="text-center">ACTION</th>
+            <th scope="col">USER</th><br>
+            <th scope="col">FNAME</th><br>
+            <th scope="col">LNAME</th><br>
+            <th scope="col">COUNTRY</th><br>
+            <th scope="col">SUBJECT</th><br>
           </tr>
         </thead>
         <tbody>
             {% for one in data %}
             <tr>
-            <td>{{one.title}}</td>
-            <td>{{one.desc}}</td>
-            <td><a href="{% url 'delete' one.id %}"><button class="btn btn-danger"><i class="fa fa-trash"></i>DELETE</button></a>  </td>
-            <td><a href="{% url 'edit' one.id %}"><button class="btn btn-warning"><i class="fa fa-trash"></i>Edit</button></a>  </td>
+            <td>{{one.user}}</td>
+            <td>{{one.fname}}</td>
+            <td>{{one.lname}}</td>
+            <td>{{one.country}}</td>
+            <td>{{one.subject}}</td>
             </tr>
             {% endfor %}
             </tbody>
     </table>
 </div>
 {% endif %}
-    
 </body>
 </html>
 {% endblock %}

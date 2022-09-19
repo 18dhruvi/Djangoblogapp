@@ -22,4 +22,4 @@ class Contact(models.Model):
     lname = models.CharField(max_length=15)
     country = models.CharField(max_length=15)
     subject = models.CharField(max_length=15)
-
+    

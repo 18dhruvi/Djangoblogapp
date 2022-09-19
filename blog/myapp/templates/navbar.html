@@ -13,10 +13,10 @@
           {% if request.user.is_authenticated %}
         </li>
         <li class="nav-item" style="list-style: none">
-          <a class="nav-link" href="{% url 'contact' %}" style="color: red">Contact</a>
+          <a class="nav-link" href="{% url 'dashboard' %}" style="color: red">Dashboard</a>
         </li>
         <li class="nav-item" style="list-style: none">
-          <a class="nav-link" href="{% url 'dashboard' %}" style="color: red">Dashboard</a>
+          <a class="nav-link" href="{% url 'contacts' %}" style="color: red">Contacts</a>
         </li>
         <li class="nav-item" style="list-style: none">
           <a class="nav-link" href="{% url 'logout' %}" style="color: red">Logout</a>
