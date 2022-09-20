@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body{
+    background-color: rgb(75,74,74);
+    color: antiquewhite;
+}
+    </style>
+</head>
+<body><hr><br>
+    {% if request.user.is_authenticated %}
+
+    <h3>Dashboard</h3>
+            <h5>HELLO,
+                {{request.user}}</h5>
+    <h4 style="color: aqua;">{{msg}}</h4>
+    <a href="{% url 'addcomment' %}"><button class="btn btn-primary"><i class="fa fa-edit"></i>ADD COMMENT</button></a> 
+       
+    <table class="table text-white m-2">
+        <thead>
+          <tr>
+            <th scope="col">USER</th><br>
+            <th scope="col">TITLE</th><br>
+            <th scope="col">COMMENT</th><br>
+          </tr>
+        </thead>
+        <tbody>
+            {% for one in data %}
+            <tr>
+            <td>{{one.user}}</td>
+            <td>{{one.title}}</td>
+            <td>{{one.comment}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+    </table>
+</div>
+{% endif %}
+    
+</body>
+</html>
+{% endblock %}

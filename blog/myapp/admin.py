@@ -1,7 +1,13 @@
 from django.contrib import admin
-from myapp.models import post,Addpost,Contact
+from myapp.models import Addpost,Contact,Comment
 
 # Register your models here.
-admin.site.register(post)
-admin.site.register(Addpost)
-admin.site.register(Contact)
+@admin.register(Addpost)
+class AddpostAdmin(admin.ModelAdmin):
+    list_display = ("title","desc","date","user")
+    
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ("user","fname","lname","country","subject")
+    
+admin.site.register(Comment)  

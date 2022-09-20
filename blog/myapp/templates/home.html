@@ -19,22 +19,6 @@
 <body><hr>
     <div class="col-sm-12">
         <h3 class="text-white">HOME PAGE</h3>
-<!-- 
-        <table>
-            <tr class="p-2">
-                <th>NUMBER</th>
-                <th>TITLE</th>
-                <th>DESCRIPTION</th>
-            </tr>
-            {% for post in posts %}
-            <tr class="p-2">
-                <td>{{post.id}}</td>
-                <td>{{post.title}}</td>
-                <td>{{post.desc}}</td>
-                
-            </tr>
-            {% endfor %}
-        </table> -->
         <table class="table text-white m-2">
             <thead>
               <tr>
@@ -42,23 +26,44 @@
                 <th scope="col">USERNAME</th>
                 <th scope="col">DESCRIPTION</th>
                 <th scope="col">DATE</th>
+                <th scope="col">COMMENT</th>
               </tr>
             </thead>
             <tbody>
-            {% for post in posts %}
+            {% for datas in data %}
             <tr>
-                <td><a href="{% url 'title' post.id %}">{{post.title}}</td></a>
-                <td><a href="{% url 'userdetails' post.id %}">{{post.user.username}}</td></a>
-                {% comment %} <td>{{post.user.username}}</td> {% endcomment %}
-                <td>{{post.desc}}</td> 
-                <td>{{post.date}}</td> 
+                <td><a href="{% url 'title' datas.id %}">{{datas.title}}</td></a>
+                <td><a href="{% url 'userdetails' user.id %}">{{datas.user.username}}</td></a>
+                <td>{{datas.desc}}</td> 
+                <td>{{datas.date}}</td> 
+                <td><a href="{% url 'comments' %}">COMMENT</td></a>
             </tr>
             {% endfor %}
             </tbody>
         </table>
+ {% if data.has_other_pages %}
+  <ul class="pagination">
+    {% if data.has_previous %}
+      <li><a href="?page={{ data.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in data.paginator.page_range %}
+      {% if data.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only"></span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if data.has_next %}
+      <li><a href="?page={{ data.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
     </div><br>
     {% comment %} <p> USER DETAILS </p> {% endcomment %}
-    <a href="{% url 'details' %}">USER DETAILS</a>
 </body>
 </html>
 {% endblock content %}

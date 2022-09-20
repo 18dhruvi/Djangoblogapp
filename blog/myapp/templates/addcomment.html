@@ -16,7 +16,7 @@
     </style>
 </head>
 <body><hr><br><br><br>
-    <form role="form" action="{% url 'addpost' %}" method="POST" class="w-50 ms-5">
+    <form role="form" action="{% url 'addcomment' %}" method="POST" class="w-50 ms-5">
         {% csrf_token %}
      {{form.as_p}}
      <input type="submit" value="Add" class="btn btn-success">

@@ -29,8 +29,15 @@ class Addposts(forms.ModelForm):
     class Meta:
         model = Addpost
         fields = ['title', 'desc', 'date']
-        
+
+
 class ContactsForm(forms.ModelForm):
     class Meta:
         model = Contact
-        fields = ['user','fname','lname', 'country','subject']
+        fields = ['user', 'fname', 'lname', 'country', 'subject']
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = [ 'title', 'comment']

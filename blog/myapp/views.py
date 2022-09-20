@@ -1,21 +1,24 @@
 from django.shortcuts import render, HttpResponseRedirect, redirect
-from .forms import SignUpForm, LoginForm, UserChangeForm, Addposts, ContactsForm
+from .forms import SignUpForm, LoginForm, UserChangeForm, Addposts, ContactsForm, CommentForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import *
-# from django.core.paginator import paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 # Create your views here.
 
 
 def home(request):
     posts = Addpost.objects.all().order_by('-date')
-    return render(request, 'home.html', {'posts': posts})
-
-
-def details(request):
-    conts = Contact.objects.all()
-    return render(request, 'details.html', {'conts': conts})
+    page = request.GET.get('page', 1)
+    paginator = Paginator(posts, 5)
+    try:
+        data = paginator.page(page)
+    except PageNotAnInteger:
+        data = paginator.page(1)
+    except EmptyPage:
+        data = paginator.page(paginator.num_pages)
+    return render(request, 'home.html', {'data': data})
 
 
 def dashboard(request):
@@ -35,8 +38,6 @@ def add_contact(request):
         if data.is_valid():
             messages.success(request, 'CONGRAT SUCESSFULLY SIGNUP!!')
             b = data.save()
-            # b.user = request.user
-            # b.save()
             return redirect('contacts')
         else:
             messages.error(request, 'INVALID DATA!!')
@@ -83,23 +84,6 @@ def signupp(request):
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
-
-
-# def signupp(request):
-#     if request.method=='POST':
-#         form=SignUpForm(request.POST)
-#         print(form)
-#         if form.is_valid():
-
-#             # messages.success(request,'CONGRAT SUCESSFULLY SIGNUP!!')
-#             form.save()
-#             return redirect('login')
-#         else:
-#             messages.error(request,'INVALID DATA!!')
-#             return redirect('signup')
-#     else:
-#         form= SignUpForm()
-#         return render(request,'signup.html',{'form':form})
 
 
 def loginn(request):
@@ -154,15 +138,39 @@ def titledetail(request, pk):
     else:
         return render(request, 'title.html', {'post': post})
 
+
 def userdetails(request, pk):
-    detail = Contact.objects.get(id=pk)
+    detail = Contact.objects.get(user__id=pk)
+    print(pk,'--------')
     data = ContactsForm(instance=detail)
     if request.method == 'POST':
         data1 = ContactsForm(request.POST, instance=detail)
-        if data1.is_valid():
-            data1.save()
-            return redirect('contacts')
-        else:
-            return redirect('userdetails')
+        # if data1.is_valid():
+        #     data1.save()
+        #     return redirect('contacts')
+        # else:
+        #     return redirect('userdetails')
     else:
-        return render(request, 'userdetails.html',{'data': data})
+        return render(request, 'userdetails.html', {'data': data, })
+
+
+def comments(request):
+    # data = Comment.objects.filter(user=request.user)
+    data = Comment.objects.all().order_by('-comment')
+    return render(request, 'comments.html', {'data': data})
+
+
+def addcomment(request):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        print(form)
+        if form.is_valid():
+            a = form.save()
+            a.user = request.user
+            a.save()
+            return redirect('comments')
+        else:
+            return redirect('addcomment')
+    else:
+        form = CommentForm()
+        return render(request, 'addcomment.html', {'form': form})
