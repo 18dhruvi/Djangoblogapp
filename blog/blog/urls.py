@@ -16,10 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from myapp import views
+from django.conf import settings
+from django.conf.urls.static import static
+# from myapp.admin import blog_site 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+    # path('add/',views.addBlog,name='addblog'),
+    path('like/<str:pk>',views.likeBlog,name='like'),
     path('contacts/', views.contact, name='contacts'),
     path('comments/', views.comments, name='comments'),
     path('title/<int:pk>', views.titledetail, name='title'),
@@ -34,4 +39,4 @@ urlpatterns = [
     path('addcomment/', views.addcomment, name='addcomment'),
     path('edit/<int:pk>', views.editt, name='edit'),
 
-]
+]+ static(settings.MEDIA_URL ,document_root=settings.MEDIA_ROOT)

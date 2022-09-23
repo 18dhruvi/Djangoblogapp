@@ -5,18 +5,47 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-<style>
-    body{
-        background-color: rgb(75,74,74);
-        color: antiquewhite;
-    }
-</style>
+    <style>
+        table, td, th {  
+            border: 1px solid #ddd;
+            text-align: center;
+          }
+          
+          table {
+            border-collapse: collapse;
+            width: 100%;
+          }
+          
+          th, td {
+            padding: 15px;
+          }
+    </style>
 </head>
 <body>
   <form role="form" method="POST">
     {% csrf_token %}
     {{post.as_p}}
 </form>
+
+<table>
+    <thead>
+      <tr>
+        <th scope="col">USER</th><br>
+        <th scope="col">TITLE</th><br>
+        <th scope="col">COMMENT</th><br>
+      </tr>
+    </thead>
+    <tbody>
+        {% for one in data %}
+        <tr>
+        <td>{{one.user}}</td>
+        <td>{{one.title}}</td>
+        <td>{{one.comment}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+</table>
+
+
 </body>
 </html>
-

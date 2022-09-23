@@ -1,8 +1,9 @@
 from django.shortcuts import render, HttpResponseRedirect, redirect
-from .forms import SignUpForm, LoginForm, UserChangeForm, Addposts, ContactsForm, CommentForm
+from .forms import SignUpForm, LoginForm, Addposts, ContactsForm, CommentForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import *
+import datetime
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 # Create your views here.
@@ -11,7 +12,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 def home(request):
     posts = Addpost.objects.all().order_by('-date')
     page = request.GET.get('page', 1)
-    paginator = Paginator(posts, 5)
+    paginator = Paginator(posts, 4)
     try:
         data = paginator.page(page)
     except PageNotAnInteger:
@@ -24,6 +25,24 @@ def home(request):
 def dashboard(request):
     data = Addpost.objects.filter(user=request.user)
     return render(request, 'dashboard.html', {'data': data})
+
+
+def add_post(request):
+    if request.method == 'POST':
+        form = Addposts(request.POST, request.FILES)
+        print(form)
+        if form.is_valid():
+            messages.success(request, 'CONGRAT SUCESSFULLY SIGNUP!!')
+            a = form.save()
+            a.user = request.user
+            a.save()
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'INVALID DATA!!')
+            return redirect('addpost')
+    else:
+        form = Addposts()
+        return render(request, 'addpost.html', {'form': form})
 
 
 def contact(request):
@@ -47,45 +66,6 @@ def add_contact(request):
         return render(request, 'addcontact.html', {'data': data})
 
 
-def add_post(request):
-    if request.method == 'POST':
-        form = Addposts(request.POST)
-        print(form)
-        if form.is_valid():
-            messages.success(request, 'CONGRAT SUCESSFULLY SIGNUP!!')
-            a = form.save()
-            a.user = request.user
-            a.save()
-            return redirect('dashboard')
-        else:
-            messages.error(request, 'INVALID DATA!!')
-            return redirect('addpost')
-    else:
-        form = Addposts()
-        return render(request, 'addpost.html', {'form': form})
-
-
-def logoutt(request):
-    logout(request)
-    messages.info(request, 'LOGOUT SUCCESSFULLY!!')
-    return render(request, 'logout.html')
-
-
-def signupp(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('home')
-    else:
-        form = SignUpForm()
-    return render(request, 'signup.html', {'form': form})
-
-
 def loginn(request):
     if not request.user.is_authenticated:
         if request.method == 'POST':
@@ -103,10 +83,38 @@ def loginn(request):
         return HttpResponseRedirect('/login/')
 
 
+def logoutt(request):
+    logout(request)
+    messages.info(request, 'LOGOUT SUCCESSFULLY!!')
+    return HttpResponseRedirect('/login/')
+
+
+def signupp(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('home')
+    else:
+        form = SignUpForm()
+    return render(request, 'signup.html', {'form': form})
+
+
 def deletes(request, pk):
     uid = Addpost.objects.get(id=pk)
     uid.delete()
     return HttpResponseRedirect('/dashboard/')
+
+
+def likeBlog(request, pk):
+    blog = Addpost.objects.get(id=pk)
+    blog.like += 1
+    blog.save()
+    return redirect('/')
 
 
 def editt(request, pk):
@@ -127,6 +135,8 @@ def editt(request, pk):
 def titledetail(request, pk):
     blog = Addpost.objects.get(id=pk)
     post = Addposts(instance=blog)
+    data = Comment.objects.filter(title__title=blog.title)
+    # data = Comment.objects.all()
     if request.method == 'POST':
         post1 = Addposts(request.POST, instance=blog)
         print(post1)
@@ -136,20 +146,15 @@ def titledetail(request, pk):
         else:
             return redirect('title')
     else:
-        return render(request, 'title.html', {'post': post})
+        return render(request, 'title.html', {'post': post, 'data': data})
 
 
 def userdetails(request, pk):
-    detail = Contact.objects.get(user__id=pk)
-    print(pk,'--------')
+    # detail = Contact.objects.get(user__id=pk)
+    detail = Contact.objects.filter(user__id=pk).first()
     data = ContactsForm(instance=detail)
     if request.method == 'POST':
         data1 = ContactsForm(request.POST, instance=detail)
-        # if data1.is_valid():
-        #     data1.save()
-        #     return redirect('contacts')
-        # else:
-        #     return redirect('userdetails')
     else:
         return render(request, 'userdetails.html', {'data': data, })
 

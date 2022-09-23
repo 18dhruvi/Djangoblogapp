@@ -16,11 +16,22 @@
     </style>
 </head>
 <body><hr><br><br><br>
-    <form role="form" action="{% url 'addpost' %}" method="POST" class="w-50 ms-5">
+
+    <div class="container " style="border:5px solid black" width="100%">
+        <br>
+        <form action="{% url 'addpost' %}" method='POST' enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.media }}
+            {{form.as_p}}
+            <input class="btn btn-success" type="submit" name="Add">
+        </form>
+    </div>
+
+    {% comment %} <form role="form" action="{% url 'addpost' %}" method="POST" class="w-50 ms-5" enctype="multipart/form-data">
         {% csrf_token %}
      {{form.as_p}}
      <input type="submit" value="Add" class="btn btn-success">
-    </form>
+    </form> {% endcomment %}
 </body>
 </html>
 {% endblock %}

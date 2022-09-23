@@ -9,24 +9,24 @@
             aria-current="page"
             href="{% url 'home' %}"
             style="color: white"
-            style="text-decoration: none">Home</a>
+            style="margin-right: 0.5rem">Home</a>
           {% if request.user.is_authenticated %}
         </li>
         <li class="nav-item" style="list-style: none">
-          <a class="nav-link" href="{% url 'dashboard' %}" style="color: red">Dashboard</a>
+          <a class="nav-link" href="{% url 'dashboard' %}" style="color: white">Dashboard</a>
         </li>
         <li class="nav-item" style="list-style: none">
-          <a class="nav-link" href="{% url 'contacts' %}" style="color: red">Contacts</a>
+          <a class="nav-link" href="{% url 'contacts' %}" style="color: white">Contacts</a>
         </li>
         <li class="nav-item" style="list-style: none">
-          <a class="nav-link" href="{% url 'logout' %}" style="color: red">Logout</a>
+          <a class="nav-link" href="{% url 'logout' %}" style="color: white">Logout</a>
         </li>
         {% else %}
         <li class="nav-item" style="list-style: none">
-          <a class="nav-link" href="{% url 'signup' %}" style="color: red">Signup</a>
+          <a class="nav-link" href="{% url 'signup' %}" style="color: white">Signup</a>
         </li>
         <li class="nav-item" style="list-style: none">
-          <a class="nav-link" href="{% url 'login' %}" style="color: red">Login</a >
+          <a class="nav-link" href="{% url 'login' %}" style="color: white">Login</a >
         </li>
         {% endif %}
       </ul>

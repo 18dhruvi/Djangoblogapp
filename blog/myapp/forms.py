@@ -28,7 +28,8 @@ class EditProfile(UserChangeForm):
 class Addposts(forms.ModelForm):
     class Meta:
         model = Addpost
-        fields = ['title', 'desc', 'date']
+        fields = ['image','title', 'desc', 'date']
+        exclude=['likes']
 
 
 class ContactsForm(forms.ModelForm):

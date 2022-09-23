@@ -9,11 +9,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <style>
-        body{
-    background-color: rgb(75,74,74);
-    color: antiquewhite;
-}
-    </style>
+        table, td, th {  
+          border: 1px solid #ddd;
+          text-align: center;
+        }
+        
+        table {
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        th, td {
+          padding: 15px;
+        }
+        </style>
 </head>
 <body><hr><br>
     {% if request.user.is_authenticated %}
@@ -24,9 +33,10 @@
     <h4 style="color: aqua;">{{msg}}</h4>
     <a href="{% url 'addpost' %}"><button class="btn btn-primary"><i class="fa fa-edit"></i>ADD POST</button></a> 
        
-    <table class="table text-white m-2">
+    <table>
         <thead>
           <tr>
+            {% comment %} <th scope="col">IMAGE</th> {% endcomment %}
             <th scope="col">TITLE</th><br>
             <th scope="col">DESCRIPTION</th><br>
             <th colspan="2" scope="col" class="text-center">ACTION</th>
@@ -35,6 +45,7 @@
         <tbody>
             {% for one in data %}
             <tr>
+            {% comment %} <td><img src="{{one.image}}" class="card-img-top" alt=""></td> {% endcomment %}
             <td>{{one.title}}</td>
             <td>{{one.desc}}</td>
             <td><a href="{% url 'delete' one.id %}"><button class="btn btn-danger"><i class="fa fa-trash"></i>DELETE</button></a>  </td>
