@@ -1,16 +1,18 @@
 from django.shortcuts import render, HttpResponseRedirect, redirect
-from .forms import SignUpForm, LoginForm, Addposts, ContactsForm, CommentForm
+from .forms import SignUpForm, LoginForm, Addposts, ContactsForm, CommentForm, ImageForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import *
 import datetime
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+# from django.urls import reverse
+
 
 # Create your views here.
 
-
 def home(request):
     posts = Addpost.objects.all().order_by('-date')
+    data1 = Image.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(posts, 4)
     try:
@@ -19,6 +21,7 @@ def home(request):
         data = paginator.page(1)
     except EmptyPage:
         data = paginator.page(paginator.num_pages)
+        data = data1
     return render(request, 'home.html', {'data': data})
 
 
@@ -29,24 +32,32 @@ def dashboard(request):
 
 def add_post(request):
     if request.method == 'POST':
-        form = Addposts(request.POST, request.FILES)
-        print(form)
+        form = Addposts(request.POST)
+        files = request.FILES.getlist("image")
         if form.is_valid():
-            messages.success(request, 'CONGRAT SUCESSFULLY SIGNUP!!')
             a = form.save()
             a.user = request.user
             a.save()
+            for i in files:
+                Image.objects.create(addpost=a, image=i)
             return redirect('dashboard')
         else:
-            messages.error(request, 'INVALID DATA!!')
             return redirect('addpost')
     else:
         form = Addposts()
-        return render(request, 'addpost.html', {'form': form})
+        imageform = ImageForm
+        return render(request, 'addpost.html', {'form': form, 'imageform': imageform})
+
+
+def addimage(request):
+    print(request.POST)
+    return render(request, 'addpost.html', {})
 
 
 def contact(request):
-    data = Contact.objects.all()
+    data = Contact.objects.all().order_by('-date')
+    print(data)
+    # data1 = Addpost.objects.all().values_list('title')
     return render(request, 'contacts.html', {'data': data})
 
 
@@ -121,7 +132,9 @@ def editt(request, pk):
     blog = Addpost.objects.get(id=pk)
     post = Addposts(instance=blog)
     if request.method == 'POST':
-        post1 = Addposts(request.POST, instance=blog)
+        # if 'image' in request.FILES:
+        #     post.image = request.FILES['image']
+        post1 = Addposts(request.POST, request.FILES, instance=blog)
         print(post1)
         if post1.is_valid():
             post1.save()
@@ -129,7 +142,7 @@ def editt(request, pk):
         else:
             return redirect('edit1')
     else:
-        return render(request, 'edit1.html', {'post': post})
+        return render(request, 'edit1.html', {'post': post, 'blog': blog})
 
 
 def titledetail(request, pk):
@@ -138,7 +151,7 @@ def titledetail(request, pk):
     data = Comment.objects.filter(title__title=blog.title)
     # data = Comment.objects.all()
     if request.method == 'POST':
-        post1 = Addposts(request.POST, instance=blog)
+        post1 = Addposts(request.POST, request.FILES, instance=blog)
         print(post1)
         if post1.is_valid():
             post1.save()
@@ -146,8 +159,12 @@ def titledetail(request, pk):
         else:
             return redirect('title')
     else:
-        return render(request, 'title.html', {'post': post, 'data': data})
+        return render(request, 'title.html', {'post': post, 'data': data, 'blog': blog})
 
+
+# def titledetail(request,pk):
+#     blog = Addpost.objects.all(id=pk)
+#     return render(request,'title.html',{'blog':blog})
 
 def userdetails(request, pk):
     # detail = Contact.objects.get(user__id=pk)

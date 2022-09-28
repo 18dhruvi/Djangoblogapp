@@ -22,9 +22,14 @@
                     <div class="card" style="width:100%" "height:100" align="center">
                         <img src="{{ datas.image.url }}" class="card-img-top" alt="">
                         <div class="card-body">
+                        {% if request.user.is_authenticated %}
                         <h5 class="card-title"><a href="{% url 'title' datas.id %}">{{datas.title}}</h5></a>
                        <p class="card-text"><a href="{% url 'userdetails' user.id %}">by: {{datas.user.username}}</a></p>
-                        <p class="card-text">{{datas.desc}}</p>
+                       {% else %}
+                       <h5 class="card-title">{{datas.title}}</h5>
+                       <p class="card-text">by: {{datas.user.username}}</p>
+                       {% endif %}
+                        <p class="card-text">{{datas.desc|truncatewords:20}}<a href="{% url 'title' datas.id %}">read more</a></p> 
                         <p class="card-text">date: {{datas.date}}</p>
                         <form action='{%  url 'like' datas.id %}' method=POST>
                           {% csrf_token %}
@@ -39,27 +44,6 @@
                 {% endfor %}
             </div>
         <br>
-     
-        {% comment %} <table id="customers">
-            <thead>
-              <tr>
-                <th scope="col">TITLE</th>
-                <th scope="col">USERNAME</th>
-                <th scope="col">DATE</th>
-                <th scope="col">COMMENT</th>
-              </tr>
-            </thead>
-            <tbody>
-            {% for datas in data %}
-            <tr>
-                <td><a href="{% url 'title' datas.id %}">{{datas.title}}</td></a>
-                <td><a href="{% url 'userdetails' user.id %}">{{datas.user.username}}</td></a>
-                <td>{{datas.date}}</td> 
-                <td><a href="{% url 'comments' %}">COMMENT</td></a>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table> {% endcomment %}
         <br>
 {% if data.has_other_pages %}
   <ul class="pagination">

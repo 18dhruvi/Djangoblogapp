@@ -1,3 +1,6 @@
+{% comment %} {% extends 'base.html' %}
+{% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,27 +9,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        table, td, th {  
-            border: 1px solid #ddd;
-            text-align: center;
-          }
-          
-          table {
-            border-collapse: collapse;
-            width: 100%;
-          }
-          
-          th, td {
-            padding: 15px;
-          }
-    </style>
+      body {font-family: Arial, Helvetica, sans-serif;}
+      * {box-sizing: border-box;}
+      
+      input[type=text], select, textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-top: 6px;
+        margin-bottom: 16px;
+        resize: vertical;
+      }
+      
+      input[type=submit] {
+        background-color: #04AA6D;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      
+      input[type=submit]:hover {
+        background-color: #45a049;
+      }
+      
+      .container {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+      }
+      </style>      
 </head>
 <body>
-  <form role="form" method="POST">
-    {% csrf_token %}
-    {{post.as_p}}
-</form>
-
+  <form role="form" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+       {{blog.image.url}}
+      <img src="http://localhost:8000{{blog.image.url}}"  alt="" height="300px"/>
+      {{post.as_p}}
+  </form>
 <table>
     <thead>
       <tr>
@@ -45,7 +68,56 @@
         {% endfor %}
         </tbody>
 </table>
-
-
 </body>
 </html>
+{% endblock content %} {% endcomment %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    table, th, td {
+      border: 1px solid;
+    }
+    </style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<h2>Blog Details</h2>
+<p> <img src="http://localhost:8000{{blog.image.url}}"  alt="" height="300px"/></p>
+<p>{{post.title}}</p>
+<p>{{post.desc}}</p>
+<p>{{post.date}}</p> 
+<table>
+  <thead>
+    <tr>
+      <th scope="col">USER</th><br>
+      <th scope="col">TITLE</th><br>
+      <th scope="col">COMMENT</th><br>
+    </tr>
+  </thead>
+  <tbody>
+      {% for one in data %}
+      <tr>
+      <td>{{one.user}}</td>
+      <td>{{one.title}}</td>
+      <td>{{one.comment}}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+</table>
+</body>
+</html>
+
+{% for hidden in hidden_fields %}
+              {{ hidden }}
+            {% endfor %} 
+            {% for field in form %}
+              {{ field }}
+            {% endfor %}
+            {{ imageform.management_form }}
+            {% for form in imageform %}
+              {{form}}
+            {% endfor %}

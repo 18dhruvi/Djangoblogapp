@@ -19,6 +19,7 @@ from myapp import views
 from django.conf import settings
 from django.conf.urls.static import static
 # from myapp.admin import blog_site 
+app_name = "myapp"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,5 +39,6 @@ urlpatterns = [
     path('addcontact/', views.add_contact, name='addcontact'),
     path('addcomment/', views.addcomment, name='addcomment'),
     path('edit/<int:pk>', views.editt, name='edit'),
+    path('addimage', views.addimage, name='addimage')
 
 ]+ static(settings.MEDIA_URL ,document_root=settings.MEDIA_ROOT)

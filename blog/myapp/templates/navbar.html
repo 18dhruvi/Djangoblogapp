@@ -10,8 +10,8 @@
             href="{% url 'home' %}"
             style="color: white"
             style="margin-right: 0.5rem">Home</a>
+          </li>
           {% if request.user.is_authenticated %}
-        </li>
         <li class="nav-item" style="list-style: none">
           <a class="nav-link" href="{% url 'dashboard' %}" style="color: white">Dashboard</a>
         </li>
