@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% comment %} <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link rel="stylesheet" href=" {% static '/css/main.css' %} ">
+</head>
+
+<body><hr>
+    <div class="col-sm-12">
+        <h3 class="text-white">HOME PAGE</h3>
+        <br>
+            <div class="row" align="center">
+              {% for datas in data %}  
+                <div class="col-md-3" align="center">
+
+                    <div class="card" style="width:100%" "height:100" align="center">
+                        <img src="{{ datas.image.url }}" class="card-img-top" alt="">
+                        <div class="card-body">
+                        {% if request.user.is_authenticated %}
+                        <h5 class="card-title"><a href="{% url 'title' datas.id %}">{{datas.title}}</h5></a>
+                       <p class="card-text"><a href="{% url 'userdetails' user.id %}">by: {{datas.user.username}}</a></p>
+                       {% else %}
+                       <h5 class="card-title">{{datas.title}}</h5>
+                       <p class="card-text">by: {{datas.user.username}}</p>
+                       {% endif %}
+                        <p class="card-text">{{datas.desc|truncatewords:20}}<a href="{% url 'title' datas.id %}">read more</a></p> 
+                        <p class="card-text">date: {{datas.date}}</p>
+                        <form action='{%  url 'like' datas.id %}' method=POST>
+                          {% csrf_token %}
+                          <button type='submit' class='btn btn-success'>{{datas.like}} Like</button>
+                      </form>   </br>  
+                        <h5 class="card-title"><a href="{% url 'comments' %}">COMMENT</h5></a>  
+                     
+
+                        </div>
+                    </div>
+                  </div>
+                {% endfor %}
+            </div>
+        <br>
+        <br>
+{% if data.has_other_pages %}
+  <ul class="pagination">
+    {% if data.has_previous %}
+      <li><a href="?page={{ data.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in data.paginator.page_range %}
+      {% if data.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">Current</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if data.has_next %}
+      <li><a href="?page={{ data.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %} 
+    </div><br>
+</body>
+</html>
+{% endblock content %} {% endcomment %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial;
+  font-size: 17px;
+}
+
+.container {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.container img {vertical-align: middle;}
+
+.container .content {
+  position: absolute;
+  bottom: 0;
+  background: rgb(0, 0, 0); /* Fallback color */
+  background: rgba(0, 0, 0, 0.5); /* Black background with 0.5 opacity */
+  color: #f1f1f1;
+  width: 100%;
+  padding: 20px;
+}
+</style>
+</head>
+<body>
+{% for datas in data %} 
+<div class="container">
+  {% for images in all_image %}
+  {% if images.addpost.title == datas.title %}
+  <img src="{{images.image.url}}" >
+  <div class="carousel-inner" align="center"> 
+    <div class="item">
+    </div>
+    <div class="item">
+      <img src="{{images.image.url}}">
+    </div>
+    <div class="item active">
+      <img src="{{images.image.url}}">
+    </div> 
+  </div>
+  {% endif %}
+  {% endfor %}
+  {% comment %} <img src="http://localhost:8000/media/images/download_1.jpeg" alt="Notebook" style="width:100%;"> {% endcomment %}
+  <div class="content">
+    <p><a href="{% url 'title' datas.id %}">{{datas.title}}</a></p>
+    <p><a href="{% url 'userdetails' user.id %}">By: {{datas.user.username}}</a></p>
+    <p>{{datas.desc}}</p>
+    <form action='{%  url 'like' datas.id %}' method=POST>
+      {% csrf_token %}
+      <button type='submit' class='btn btn-success'>{{datas.like}} Like</button>
+    </form>
+    <h5 class="card-title"><a href="{% url 'comments' %}">COMMENT</h5></a>  
+  </div>
+</div>
+{% endfor %}
+
+</body>
+</html>
+{% endblock content %}
