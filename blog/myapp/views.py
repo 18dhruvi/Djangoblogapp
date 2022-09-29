@@ -12,7 +12,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 def home(request):
     posts = Addpost.objects.all().order_by('-date')
-    data1 = Image.objects.all()
+    all_image = Image.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(posts, 4)
     try:
@@ -21,8 +21,8 @@ def home(request):
         data = paginator.page(1)
     except EmptyPage:
         data = paginator.page(paginator.num_pages)
-        data = data1
-    return render(request, 'home.html', {'data': data})
+        data
+    return render(request, 'home.html', {'data': data,'all_image': all_image})
 
 
 def dashboard(request):
@@ -49,9 +49,10 @@ def add_post(request):
         return render(request, 'addpost.html', {'form': form, 'imageform': imageform})
 
 
-def addimage(request):
-    print(request.POST)
-    return render(request, 'addpost.html', {})
+def addimage(request,pk):
+    image = Image.objects.get(id=pk)
+    print(image)
+    return render(request, 'addpost.html', {'image': image})
 
 
 def contact(request):
@@ -196,3 +197,5 @@ def addcomment(request):
     else:
         form = CommentForm()
         return render(request, 'addcomment.html', {'form': form})
+
+

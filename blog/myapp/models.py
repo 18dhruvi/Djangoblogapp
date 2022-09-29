@@ -12,19 +12,22 @@ class Addpost(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, related_name="add_post")
     like = models.IntegerField(default=0)
+
     class Meta:
         verbose_name = "Addpost"
 
     def __str__(self):
         return self.title
 
+
 class Image(models.Model):
     image = models.ImageField(upload_to="images/")
-    addpost = models.ForeignKey(Addpost, on_delete=models.CASCADE,null=True)
-    
+    addpost = models.ForeignKey(Addpost, on_delete=models.CASCADE, null=True)
+
     def __str__(self):
         return self.addpost.title
-    
+
+
 class Contact(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     fname = models.CharField(max_length=15)
@@ -41,12 +44,9 @@ class Comment(models.Model):
     title = models.ForeignKey(Addpost, on_delete=models.CASCADE, null=True)
     comment = models.CharField(max_length=75)
     created_on = models.DateTimeField(auto_now_add=True)
-    
+
     def __str__(self):
         return self.title.title
 
     def short_comment(self):
         return truncatechars(self.comment, 35)
-
-  
-   
