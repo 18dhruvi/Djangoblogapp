@@ -39,6 +39,5 @@ urlpatterns = [
     path('addcontact/', views.add_contact, name='addcontact'),
     path('addcomment/', views.addcomment, name='addcomment'),
     path('edit/<int:pk>', views.editt, name='edit'),
-    path('addimage', views.addimage, name='addimage')
-
+    path('allimage/<int:pk>', views.allimage, name='allimage'),
 ]+ static(settings.MEDIA_URL ,document_root=settings.MEDIA_ROOT)

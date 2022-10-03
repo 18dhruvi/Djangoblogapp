@@ -48,7 +48,7 @@
     <form role="form" action="{% url 'addcontact' %}" method="POST" class="w-50 ms-5">
         {% csrf_token %}
      {{data.as_p}}
-     <input type="submit" value="Add" class="btn btn-success">
+     <input type="submit" value="Add" class="btn btn-primary">
     </form>
 </body>
 </html>

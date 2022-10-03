@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from .models import *
 import datetime
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.conf import settings
+from django.core.mail import send_mail
 # from django.urls import reverse
 
 
@@ -13,6 +15,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 def home(request):
     posts = Addpost.objects.all().order_by('-date')
     all_image = Image.objects.all()
+    print(all_image)
     page = request.GET.get('page', 1)
     paginator = Paginator(posts, 4)
     try:
@@ -21,8 +24,8 @@ def home(request):
         data = paginator.page(1)
     except EmptyPage:
         data = paginator.page(paginator.num_pages)
-        data
-    return render(request, 'home.html', {'data': data,'all_image': all_image})
+
+    return render(request, 'home.html', {'data': data, 'all_image': all_image})
 
 
 def dashboard(request):
@@ -47,12 +50,6 @@ def add_post(request):
         form = Addposts()
         imageform = ImageForm
         return render(request, 'addpost.html', {'form': form, 'imageform': imageform})
-
-
-def addimage(request,pk):
-    image = Image.objects.get(id=pk)
-    print(image)
-    return render(request, 'addpost.html', {'image': image})
 
 
 def contact(request):
@@ -110,6 +107,11 @@ def signupp(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
+            subject = 'Welcome '
+            message = f'Hi {user.username}, Thank you for register.'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [user.email, ]
+            send_mail(subject, message, email_from, recipient_list)
             return redirect('home')
     else:
         form = SignUpForm()
@@ -148,11 +150,12 @@ def editt(request, pk):
 
 def titledetail(request, pk):
     blog = Addpost.objects.get(id=pk)
+    all_image = Image.objects.get(id=pk)
+    print(all_image)
     post = Addposts(instance=blog)
     data = Comment.objects.filter(title__title=blog.title)
-    # data = Comment.objects.all()
     if request.method == 'POST':
-        post1 = Addposts(request.POST, request.FILES, instance=blog)
+        post1 = Addposts(request.POST, instance=blog)
         print(post1)
         if post1.is_valid():
             post1.save()
@@ -160,12 +163,14 @@ def titledetail(request, pk):
         else:
             return redirect('title')
     else:
-        return render(request, 'title.html', {'post': post, 'data': data, 'blog': blog})
+        return render(request, 'title.html', {'post': post, 'data': data, 'blog': blog, 'all_image': all_image})
 
 
-# def titledetail(request,pk):
-#     blog = Addpost.objects.all(id=pk)
-#     return render(request,'title.html',{'blog':blog})
+def allimage(request, pk):
+    # image = Image.objects.all()
+    image = Image.objects.filter(addpost__pk=pk)
+    return render(request, 'allimage.html', {'image': image})
+
 
 def userdetails(request, pk):
     # detail = Contact.objects.get(user__id=pk)
@@ -197,5 +202,3 @@ def addcomment(request):
     else:
         form = CommentForm()
         return render(request, 'addcomment.html', {'form': form})
-
-

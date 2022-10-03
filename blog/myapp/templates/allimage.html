@@ -1,0 +1,14 @@
+{% block content %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+<body>
+    <h1> All Image </h1>
+    {% for i in image %} 
+    <img src="{{ i.image.url }}" class="card-img-top" alt=""/>
+    {% endfor %} 
+</body>
+</html> 
+{% endblock content %}

@@ -32,13 +32,16 @@ class Addposts(forms.ModelForm):
         exclude = ['likes']
      # image = forms.ImageField(label='image',widget=forms.ClearableFileInput(attrs={"multiple": True}),)
 
+
 class ImageForm(forms.ModelForm):
     image = forms.ImageField(
         label='image',
         widget=forms.ClearableFileInput(attrs={"multiple": True}))
-    class Meta :
+
+    class Meta:
         model = Image
         fields = ['image']
+
 
 class ContactsForm(forms.ModelForm):
     class Meta:

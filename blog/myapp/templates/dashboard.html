@@ -12,19 +12,19 @@
         table, td, th {  
           border: 1px solid #ddd;
           text-align: center;
-          margin-left:40px;
+          margin-left:20px;
+          {% comment %} margin-right:20px; {% endcomment %}
          
         }
         
         table {
           border-collapse: collapse;
           width: 80%;
-          margin-left:40px;
+          margin-left:20px;
         }
-        
         th, td {
           padding: 15px;
-          margin-left:40px;
+          margin-left:20px;
         }
         </style>
 </head>
@@ -37,7 +37,7 @@
     <h4 style="color: aqua;">{{msg}}</h4>
     <a href="{% url 'addpost' %}"><button class="btn btn-primary"><i class="fa fa-edit"></i>ADD POST</button></a> 
        
-    <table style=" margin-left:30px; ">
+    <br><table style=" margin-left:30px; ">
         <thead>
           <tr>
             {% comment %} <th scope="col">IMAGE</th> {% endcomment %}
@@ -59,8 +59,7 @@
             </tbody>
     </table>
 </div>
-{% endif %}
-    
+{% endif %} 
 </body>
 </html>
 {% endblock %}

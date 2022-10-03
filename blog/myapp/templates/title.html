@@ -72,7 +72,6 @@
 </html>
 {% endblock content %} {% endcomment %}
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -86,10 +85,19 @@
 <body>
 
 <h2>Blog Details</h2>
-<p> <img src="http://localhost:8000{{blog.image.url}}"  alt="" height="300px"/></p>
-<p>{{post.title}}</p>
+{% comment %} {% for image in all_image %}
+    {% if images.addpost.title == datas.title %} {% endcomment %}
+        {% comment %} <p><img src="{{ image.image.url }}" alt="Image" width="200px" height="200px"></p> {% endcomment %}
+        <p><img src="{{ blog.image_set.all.0.image.url }}" class="card-img-top" alt=""></p>
+    {% comment %} {% endif %}
+{% endfor %} {% endcomment %}
+<a href = "{% url 'allimage' blog.id %}">Show More image...</a>
+{{post.pk}}
+<br><br>{{post.title}}
 <p>{{post.desc}}</p>
 <p>{{post.date}}</p> 
+<h5 class="card-title"><a href="{% url 'comments' %}">COMMENT</h5></a>  
+</body>
 <table>
   <thead>
     <tr>
@@ -108,16 +116,4 @@
       {% endfor %}
       </tbody>
 </table>
-</body>
-</html>
-
-{% for hidden in hidden_fields %}
-              {{ hidden }}
-            {% endfor %} 
-            {% for field in form %}
-              {{ field }}
-            {% endfor %}
-            {{ imageform.management_form }}
-            {% for form in imageform %}
-              {{form}}
-            {% endfor %}
+</html> 

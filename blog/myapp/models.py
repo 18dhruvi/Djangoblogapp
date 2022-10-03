@@ -24,7 +24,7 @@ class Image(models.Model):
     image = models.ImageField(upload_to="images/")
     addpost = models.ForeignKey(Addpost, on_delete=models.CASCADE, null=True)
 
-    def __str__(self):
+    def __str__(self): 
         return self.addpost.title
 
 

@@ -21,4 +21,3 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ("user","title","short_comment")
 
 admin.site.register(Image)  
-
