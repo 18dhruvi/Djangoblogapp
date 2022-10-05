@@ -29,3 +29,27 @@ class Addposts(forms.ModelForm):
     class Meta:
         model = Addpost
         fields = ['title', 'desc', 'date']
+        exclude = ['likes']
+     # image = forms.ImageField(label='image',widget=forms.ClearableFileInput(attrs={"multiple": True}),)
+
+
+class ImageForm(forms.ModelForm):
+    image = forms.ImageField(
+        label='image',
+        widget=forms.ClearableFileInput(attrs={"multiple": True}))
+
+    class Meta:
+        model = Image
+        fields = ['image']
+
+
+class ContactsForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['user', 'fname', 'lname', 'country']
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['title', 'comment']

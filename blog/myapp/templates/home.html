@@ -1,62 +1,71 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        body{
-    background-color: rgb(75,74,74);
-    color: antiquewhite;
-}
-    </style>
-    <h5>HELLO</h5>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+{% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> {% endcomment %}
+    {% comment %} <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"> {% endcomment %}
+        <link rel="stylesheet" href=" {% static '/css/main.css' %} ">
 </head>
 <body><hr>
     <div class="col-sm-12">
         <h3 class="text-white">HOME PAGE</h3>
-<!-- 
-        <table>
-            <tr class="p-2">
-                <th>NUMBER</th>
-                <th>TITLE</th>
-                <th>DESCRIPTION</th>
-            </tr>
-            {% for post in posts %}
-            <tr class="p-2">
-                <td>{{post.id}}</td>
-                <td>{{post.title}}</td>
-                <td>{{post.desc}}</td>
-                
-            </tr>
-            {% endfor %}
-        </table> -->
-        <table class="table text-white m-2">
-            <thead>
-              <tr>
-                <th scope="col">TITLE</th>
-                <th scope="col">USERNAME</th>
-                <th scope="col">DESCRIPTION</th>
-                <th scope="col">DATE</th>
-              </tr>
-            </thead>
-            <tbody>
-                {% for post in posts %}
-                <tr>
-                    <td>{{post.title}}</td>
-                    <td>{{post.username}}</td> 
-                    <td>{{post.desc}}</td> 
-                    <td>{{post.date}}</td> 
-                </tr>
+        <br>
+            <div class="row" align="center">
+              {% for datas in data %}  
+                <div class="col-md-3" align="center">
+                    <div class="card" style="width:100%" "height:100" align="center">
+                        <img src="{{ datas.image_set.all.0.image.url }}" class="card-img-top" alt="">
+                        <div class="card-body">
+                        {% if request.user.is_authenticated %}
+                        <h5 class="card-title"><a href="{% url 'title' datas.id %}">{{datas.title}}</h5></a>
+                       <p class="card-text"><a href="{% url 'userdetails' user.id %}">By: {{datas.user.username}}</a></p>
+                       {% else %}
+                       <h5 class="card-title">{{datas.title}}</h5>
+                       <p class="card-text">By: {{datas.user.username}}</p>
+                       {% endif %}
+                        <p class="card-text">{{datas.desc|truncatewords:20}}<a href="{% url 'title' datas.id %}">read more</a></p> 
+                        <p class="card-text">date: {{datas.date|timesince}}</p>
+                        <form action='{%  url 'like' datas.id %}' method=POST>
+                          {% csrf_token %}
+                          <button type='submit' class='btn btn-primary'>{{datas.like}} Like</button>
+                      </form></br>            
+                        </div>
+                    </div>
+                  </div>
                 {% endfor %}
-                </tbody>
-        </table>
-    </div>
-   
-</body>
-</html>
-{% endblock content %}
+            </div>
+        <br>
+        <br>
+{% if data.has_other_pages %}
+  <ul class="pagination">
+    {% if data.has_previous %}
+      <li><a href="?page={{ data.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in data.paginator.page_range %}
+      {% if data.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">Current</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if data.has_next %}
+      <li><a href="?page={{ data.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %} 
+    </div><br>
+  </body>
+  </html>
+  {% endblock content %}

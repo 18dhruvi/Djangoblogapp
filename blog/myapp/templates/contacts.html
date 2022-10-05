@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        table, td, th {  
+          border: 1px solid #ddd;
+          text-align: center;
+        }
+        
+        table {
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        th, td {
+          padding: 15px;
+        }
+        </style>
+</head>
+<body><hr><br>
+    {% if request.user.is_authenticated %}
+    <h4 style="color: aqua;">{{msg}}</h4>
+    <a href="{% url 'addcontact' %}"><button class="btn btn-primary"><i class="fa fa-edit"></i>ADD CONTACT</button></a> 
+    <br><br><br><p> User Detail </p>
+    <table>
+        <thead>
+          <tr>
+            <th scope="col">USER</th><br>
+            <th scope="col">TITLE</th><br>
+            <th scope="col">FNAME</th><br>
+            <th scope="col">LNAME</th><br>
+            <th scope="col">COUNTRY</th><br>
+            <th scope="col">DATE</th><br>
+          </tr>
+        </thead>
+        <tbody>
+            {% for one in data %}
+            <tr>
+            <td><a href="{% url 'userdetails' user.id %}">{{one.user}}</a></td>
+            
+            <td>
+              {% for i in one.user.add_post.all  %}
+              <a href="{% url 'title' i.id %}">{{i}}
+              {% endfor %}
+              </a></td>
+            <td>{{one.fname}}</td>
+            <td>{{one.lname}}</td>
+            <td>{{one.country}}</td>
+            <td>{{one.date}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+    </table>
+</div>
+{% endif %}
+</body>
+</html>
+{% endblock %}

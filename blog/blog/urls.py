@@ -14,18 +14,31 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from myapp import views
+from django.conf import settings
+from django.conf.urls.static import static
+# from myapp.admin import blog_site 
+app_name = "myapp"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-     path('', views.home,name='home'),
-     path('contact/', views.contacts,name='contact'),
-     path('dashboard/', views.dashboard,name='dashboard'),
-     path('login/', views.loginn,name='login'),
-     path('signup/', views.signupp,name='signup'),
-     path('logout/', views.logoutt,name='logout'),
-     path('delete/<int:pk>',views.deletes,name='delete'),
-     path('addpost/', views.add_post,name='addpost'),
-     path('edit/<int:pk>',views.editt,name='edit'),   
-]
+    path('accounts/', include('allauth.urls')),
+    path('', views.home, name='home'),
+    # path('add/',views.addBlog,name='addblog'),
+    path('like/<str:pk>',views.likeBlog,name='like'),
+    path('contacts/', views.contact, name='contacts'),
+    path('comments/', views.comments, name='comments'),
+    path('title/<int:pk>', views.titledetail, name='title'),
+    path('userdetails/<int:pk>', views.userdetails, name='userdetails'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('login/', views.loginn, name='login'),
+    path('signup/', views.signupp, name='signup'),
+    path('logout/', views.logoutt, name='logout'),
+    path('delete/<int:pk>', views.deletes, name='delete'),
+    path('addpost/', views.add_post, name='addpost'),
+    path('addcontact/', views.add_contact, name='addcontact'),
+    path('addcomment/', views.addcomment, name='addcomment'),
+    path('edit/<int:pk>', views.editt, name='edit'),
+    path('allimage/<int:pk>', views.allimage, name='allimage'),
+]+ static(settings.MEDIA_URL ,document_root=settings.MEDIA_ROOT)

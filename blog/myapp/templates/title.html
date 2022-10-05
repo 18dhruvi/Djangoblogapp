@@ -1,0 +1,119 @@
+{% comment %} {% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      body {font-family: Arial, Helvetica, sans-serif;}
+      * {box-sizing: border-box;}
+      
+      input[type=text], select, textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-top: 6px;
+        margin-bottom: 16px;
+        resize: vertical;
+      }
+      
+      input[type=submit] {
+        background-color: #04AA6D;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      
+      input[type=submit]:hover {
+        background-color: #45a049;
+      }
+      
+      .container {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+      }
+      </style>      
+</head>
+<body>
+  <form role="form" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+       {{blog.image.url}}
+      <img src="http://localhost:8000{{blog.image.url}}"  alt="" height="300px"/>
+      {{post.as_p}}
+  </form>
+<table>
+    <thead>
+      <tr>
+        <th scope="col">USER</th><br>
+        <th scope="col">TITLE</th><br>
+        <th scope="col">COMMENT</th><br>
+      </tr>
+    </thead>
+    <tbody>
+        {% for one in data %}
+        <tr>
+        <td>{{one.user}}</td>
+        <td>{{one.title}}</td>
+        <td>{{one.comment}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+</table>
+</body>
+</html>
+{% endblock content %} {% endcomment %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    table, th, td {
+      border: 1px solid;
+    }
+    </style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<h2>Blog Details</h2>
+{% comment %} {% for image in all_image %}
+    {% if images.addpost.title == datas.title %} {% endcomment %}
+        {% comment %} <p><img src="{{ image.image.url }}" alt="Image" width="200px" height="200px"></p> {% endcomment %}
+        <p><img src="{{ blog.image_set.all.0.image.url }}" class="card-img-top" alt=""></p>
+    {% comment %} {% endif %}
+{% endfor %} {% endcomment %}
+<a href = "{% url 'allimage' blog.id %}">Show More image...</a>
+{{post.pk}}
+<br><br>{{post.title}}
+<p>{{post.desc}}</p>
+<p>{{post.date}}</p> 
+<h5 class="card-title"><a href="{% url 'comments' %}">COMMENT</h5></a>  
+</body>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">USER</th><br>
+      <th scope="col">TITLE</th><br>
+      <th scope="col">COMMENT</th><br>
+    </tr>
+  </thead>
+  <tbody>
+      {% for one in data %}
+      <tr>
+      <td>{{one.user}}</td>
+      <td>{{one.title}}</td>
+      <td>{{one.comment}}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+</table>
+</html> 

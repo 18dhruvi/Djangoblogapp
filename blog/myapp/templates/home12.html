@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Example of Bootstrap 3 Carousel</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<style>
+    .carousel {
+        margin-left: 15%;
+        margin-right: 15%;
+    }
+
+    ul.slides {
+        display: block;
+        position: relative;
+        height: 600px;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        list-style: none;
+    }
+    
+    .slides * {
+        user-select: none;
+        -ms-user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+    }
+    
+    ul.slides input {
+        display: none; 
+    }
+    
+    
+    .slide-container { 
+        display: block; 
+    }
+    
+    .slide-image {
+        display: block;
+        position: absolute;
+        width: 50%;
+        height: 50%;
+        top: 0;
+        opacity: 0;
+        transition: all .7s ease-in-out;
+    }   
+    
+    .slide-image img {
+        width: auto;
+        min-width: 100%;
+        height: 100%;
+    }
+    
+    .carousel-controls {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        font-size: 100px;
+        line-height: 600px;
+        color: #fff;
+    }
+    .row>* {
+        flex-shrink: 0;
+        width: 50%;
+        max-width: 100%;
+        padding-right: calc(var(--bs-gutter-x) * .5);
+        padding-left: 30px;
+        margin-top: 20px;
+    }
+    .carousel-controls label {
+        display: none;
+        position: absolute;
+        padding: 0 20px;
+        opacity: 0;
+        transition: opacity .2s;
+        cursor: pointer;
+    }
+    
+    .slide-image:hover + .carousel-controls label{
+        opacity: 0.5;
+    }
+    
+    .carousel-controls label:hover {
+        opacity: 1;
+    }
+    
+    .carousel-controls .prev-slide {
+        width: 49%;
+        text-align: left;
+        left: 0;
+    }
+    
+    .carousel-controls .next-slide {
+        width: 49%;
+        text-align: right;
+        right: 0;
+    }
+    
+    .carousel-dots {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 20px;
+        z-index: 999;
+        text-align: center;
+    }
+    
+    .carousel-dots .carousel-dot {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: #fff;
+        opacity: 0.5;
+        margin: 10px;
+    }
+    
+    input:checked + .slide-container .slide-image {
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity 1s ease-in-out;
+    }
+    
+    input:checked + .slide-container .carousel-controls label {
+         display: block; 
+    }
+    p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+   
+<div class="carousel-inner" role="listbox">
+    {% for datas in data %}
+    {% if forloop.counter == 1 %}
+    <div class="item active">
+    {% else %}
+    <div class="item">
+    {% endif %}
+    {% for images in all_image %}
+    {% if images.addpost.title == datas.title %}
+        <img src="{{ images.image.url }}" alt="Image" width="300px" height="200px">
+    {% endif %}
+    {% endfor %}
+  <div class="carousel-caption">
+</div>
+{% if request.user.is_authenticated %}
+<p><a href="{% url 'title' datas.id %}">{{datas.title}}</a></p>
+{% else %}
+<p>{{datas.title}}</p>
+{% endif %}
+
+{% if request.user.is_authenticated %}
+<p><a href="{% url 'userdetails' user.id %}">By: {{datas.user.username}}</a></p>
+{% else %}
+<p>{{datas.user.username}}</p>
+{% endif %}
+
+<p>{{ datas.desc |truncatewords:20 }}</p>
+<p>{{ datas.date }}</p>
+<p><a href="{% url 'comments' %}">COMMENT</a></p>
+<form action='{%  url 'like' datas.id %}' method=POST, style='text-align:center'>
+    {% csrf_token %}
+    <button type='submit' class='btn btn-success'>{{datas.like}} Like</button>
+</form>
+</div>
+    {% endfor %}
+    </div>
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a> 
+</div>
+{% if data.has_other_pages %}
+  <ul class="pagination">
+    {% if data.has_previous %}
+      <li><a href="?page={{ data.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in data.paginator.page_range %}
+      {% if data.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">Current</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if data.has_next %}
+      <li><a href="?page={{ data.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %} 
+    </div><br>
+</body>
+</html>
+{% endblock content %}
