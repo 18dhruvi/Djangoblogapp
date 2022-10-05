@@ -140,3 +140,4 @@ myproject/
 ../.DS_Store
 ../.gitignore
 .DS_Store
+__pycache__

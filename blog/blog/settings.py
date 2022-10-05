@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-*0xxyx^1bb7swq6c3$q00g^7pun4$(v$3e1il^2hzy+r2p1sb3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.linkedin_oauth2',
     'allauth.socialaccount.providers.instagram',
+    'allauth.socialaccount.providers.facebook',
      
 ]
 
@@ -54,9 +55,8 @@ SITE_ID = 1
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': '123',
-            'secret': '456',
-            'key': ''
+            'client_id': '51184069697-f4fhglagn20phgdg5d54lodhl1cucvu4.apps.googleusercontent.com',
+            'secret': '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',
         }
     },
      'linkedin': {
@@ -72,6 +72,27 @@ SOCIALACCOUNT_PROVIDERS = {
             'picture-url',
             'public-profile-url',
         ]
+    },
+      'facebook': {
+        'METHOD': 'oauth2',
+        'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
+        'SCOPE': ['email', 'public_profile'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'first_name',
+            'last_name',
+            'middle_name',
+            'name',
+            'name_format',
+            'picture',
+            'short_name'
+        ],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': 'path.to.callable',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v13.0',
     }
 }
 
@@ -179,3 +200,11 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_LOGOUT_URL = "/account_login"
+
+
+
+# 727828575880-691q1fm9harvabmdm3tinnrgqklf9kpp.apps.googleusercontent.com
+# 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
