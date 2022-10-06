@@ -107,7 +107,7 @@ def signupp(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            subject = 'Welcome '
+            subject = 'Welcome to Blog application '
             message = f'Hi {user.username}, Thank you for register.'
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [user.email, ]

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.linkedin_oauth2',
     'allauth.socialaccount.providers.instagram',
     'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.github',
      
 ]
 
@@ -75,7 +76,7 @@ SOCIALACCOUNT_PROVIDERS = {
     },
       'facebook': {
         'METHOD': 'oauth2',
-        'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
+        # 'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
         'SCOPE': ['email', 'public_profile'],
         'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
         'INIT_PARAMS': {'cookie': True},
@@ -90,9 +91,16 @@ SOCIALACCOUNT_PROVIDERS = {
             'short_name'
         ],
         'EXCHANGE_TOKEN': True,
-        'LOCALE_FUNC': 'path.to.callable',
+        # 'LOCALE_FUNC': 'path.to.callable',
         'VERIFIED_EMAIL': False,
         'VERSION': 'v13.0',
+    },
+      'github': {
+        'SCOPE': [
+            'user',
+            'repo',
+            'read:org',
+        ],
     }
 }
 
@@ -208,3 +216,15 @@ ACCOUNT_LOGOUT_URL = "/account_login"
 
 # 727828575880-691q1fm9harvabmdm3tinnrgqklf9kpp.apps.googleusercontent.com
 # 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
+
+
+# 812657666542570
+# fa4f82c09bb2a0a04f519b5741a68d89
+
+
+
+# github = 8985ad54a885a15c98f5
+# 9c0913ad0d718d799f89a4b7c2d3409b9af65118
+
+# fb = 2503174489853784
+# db1f33ad11932ba571e7d61a07612c5b
