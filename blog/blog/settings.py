@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-from celery import Celery
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,7 +25,7 @@ SECRET_KEY = 'django-insecure-*0xxyx^1bb7swq6c3$q00g^7pun4$(v$3e1il^2hzy+r2p1sb3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -39,16 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myapp',
-   
-    'django.contrib.sites',
+     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.linkedin_oauth2',
     'allauth.socialaccount.providers.instagram',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.github',
      
 ]
 
@@ -58,8 +54,9 @@ SITE_ID = 1
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': '51184069697-f4fhglagn20phgdg5d54lodhl1cucvu4.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': '123',
+            'secret': '456',
+            'key': ''
         }
     },
      'linkedin': {
@@ -75,34 +72,6 @@ SOCIALACCOUNT_PROVIDERS = {
             'picture-url',
             'public-profile-url',
         ]
-    },
-      'facebook': {
-        'METHOD': 'oauth2',
-        # 'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
-        'SCOPE': ['email', 'public_profile'],
-        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
-        'INIT_PARAMS': {'cookie': True},
-        'FIELDS': [
-            'id',
-            'first_name',
-            'last_name',
-            'middle_name',
-            'name',
-            'name_format',
-            'picture',
-            'short_name'
-        ],
-        'EXCHANGE_TOKEN': True,
-        # 'LOCALE_FUNC': 'path.to.callable',
-        'VERIFIED_EMAIL': False,
-        'VERSION': 'v13.0',
-    },
-      'github': {
-        'SCOPE': [
-            'user',
-            'repo',
-            'read:org',
-        ],
     }
 }
 
@@ -189,9 +158,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'rajanidhruvi9@gmail.com'
-EMAIL_HOST_PASSWORD = 'vobqwgwuojkevpdp'
-DEFAULT_FROM_EMAIL='Celery <rajanidhruvi9@gmail.com>'
+EMAIL_HOST_USER = 'dhruvirajani18@gmail.com'
+EMAIL_HOST_PASSWORD = 'jabdjpbujqjwiseb'
 
 
 MEDIA_URL = '/media/'
@@ -211,43 +179,3 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-
-LOGIN_REDIRECT_URL = "/"
-ACCOUNT_LOGOUT_URL = "/account_login"
-
-# CELERY SETTINGS
-
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Asia/Kolkata'
-
-CELERY_RESULT_BACKEND = 'django-db'
-
-#CELERY BEAT
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-
-# SMTP Settings
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = "smtp.gmail.com"
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER ='hemil.tagline@gmail.com'
-# EMAIL_HOST_PASSWORD = "icngdxxjfxzxgcpr"
-# DEFAULT_FROM_EMAIL = 'Celery <priyanshuguptacontact@gmail.com>'
-
-# 727828575880-691q1fm9harvabmdm3tinnrgqklf9kpp.apps.googleusercontent.com
-# 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
-
-
-# 812657666542570
-# fa4f82c09bb2a0a04f519b5741a68d89
-
-
-
-# github = 8985ad54a885a15c98f5
-# 9c0913ad0d718d799f89a4b7c2d3409b9af65118
-
-# fb = 2503174489853784
-# db1f33ad11932ba571e7d61a07612c5b
