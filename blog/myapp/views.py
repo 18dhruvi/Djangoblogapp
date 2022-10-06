@@ -7,6 +7,7 @@ import datetime
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.conf import settings
 from django.core.mail import send_mail
+from myapp.tasks import send_mail_func
 # from django.urls import reverse
 
 
@@ -107,11 +108,12 @@ def signupp(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            subject = 'Welcome to Blog application '
-            message = f'Hi {user.username}, Thank you for register.'
-            email_from = settings.EMAIL_HOST_USER
-            recipient_list = [user.email, ]
-            send_mail(subject, message, email_from, recipient_list)
+            send_mail_func.delay(user.email)
+            # subject = 'Welcome to Blog application '
+            # message = f'Hi {user.username}, Thank you for register.'
+            # email_from = settings.EMAIL_HOST_USER
+            # recipient_list = [user.email, ]
+            # send_mail(subject, message, email_from, recipient_list)
             return redirect('home')
     else:
         form = SignUpForm()
