@@ -10,7 +10,7 @@
     <title>Document</title>
     <style>
         body {
-            background-color: #444;
+            background-color: white;
         }
         
         .ar_form {
@@ -79,6 +79,33 @@
         .ar_form a:hover {
             color: #35BD87;
         }
+        .google {
+            background-color: #205081;
+            color: white;
+          }
+
+        .linkedin {
+        background-color: #0087be;
+        color: white;
+        }
+
+        .fb {
+            background-color: #3B5998;
+            color: white;
+          }
+        
+        .github {
+            background-color: #333;
+            color: white;
+            }
+
+        .instagram {
+            background-color: #dd4b39;
+            color: white;
+        }
+        
+        
+          
     </style>
 </head>
 <body>
@@ -91,8 +118,25 @@
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Login</button>
+            <a href="{% url 'google_login' %}" class="google btn"><i class="fa fa-google fa-fw">
+            </i> Login with Google+
+          </a>
+        <a href="{% url 'linkedin_oauth2_login' %}" class="linkedin btn"><i class="icon fa fa-linkedin">
+        </i> Login with linkedin
+        </a>
+        <a href="{% url 'instagram_login' %}" class="instagram btn"><i class="fa fa-instagram fa-fw">
+        </i> Login with instagram
+        </a>
+        <a href="{% url 'facebook_login' %}" class="fb btn"><i class="fa fa-facebook-square fa-fw">
+        </i> Login with facebook
+        </a>
+        <a href="{% url 'github_login' %}" class="github btn"><i class="fa fa-github-square fa-fw">
+        </i> Login with github
+        </a>
+
           </form>
     </div> 
 </body>
 </html>
 {% endblock content %}
+
