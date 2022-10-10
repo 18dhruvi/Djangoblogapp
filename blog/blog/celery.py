@@ -10,16 +10,3 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
 
 
-# app.conf.beat_schedule = {
-#     'send_mail_func' : {
-#         'task' : 'send_mail.tasks.send_mail_func',
-#         'schedule' : 30.0
-#     }
-    
-# }
-
-
-# schedule, created = IntervalSchedule.objects.get_or_create(
-#     every=10,
-#     period=IntervalSchedule.SECONDS,
-# )

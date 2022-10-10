@@ -235,3 +235,10 @@ CELERY_TIMEZONE = 'Asia/kolkata'
 
 # fb = 2503174489853784
 # db1f33ad11932ba571e7d61a07612c5b
+
+CELERY_BEAT_SCHEDULE = {
+    'add-every-30-seconds': {
+        'task': 'myapp.tasks.add',
+        'schedule': 5.0,
+    }
+}
