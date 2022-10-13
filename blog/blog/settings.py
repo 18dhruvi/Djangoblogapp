@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.github',
     # 'django_celery_beat',
+    # 'admin_auto_filters.filters',
      
 ]
 

@@ -6,6 +6,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User
 import celery
 
+
 from celery import shared_task
 
 @shared_task()
@@ -25,6 +26,8 @@ def send_mail_func(email):
 
 @shared_task()
 def add():
+    # run_every=crontab("0 0 * * TUE"),
+    # run_every=(crontab(today.date__day == saturday)),
     users = User.objects.all().values_list('email', flat=True)
     # for user in users:
     mail_subject="Welcome to Blog application"
@@ -36,6 +39,7 @@ def add():
         from_email=settings.EMAIL_HOST_USER,
         recipient_list=users,
         fail_silently=True,
+        
     )
     return "Done"
 

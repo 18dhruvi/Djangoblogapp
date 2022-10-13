@@ -43,9 +43,9 @@
 <body>
   <form role="form" method="POST" enctype="multipart/form">
     {% csrf_token %}
-    {{blog.image.url}}
-    <img src="http://localhost:8000/media/images/{{blog.image.url}}"  alt="" height="50px"/>
-    {{post.as_p}}
+    {% comment %} {{blog.image.url}}
+    <img src="http://localhost:8000/media/images/{{blog.image.url}}"  alt="" height="50px"/> {% endcomment %}
+    {{form.as_p}}
     <input type="submit" value="Edit" class="btn btn-primary">
 </form>
 </body>
