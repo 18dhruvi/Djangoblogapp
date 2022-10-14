@@ -23,16 +23,16 @@ class Home(generic.ListView):
     context_object_name = "data"
 
     def get_queryset(self):
-        return self.model.objects.all().order_by('-date')
+        return super(Home, self).get_queryset().order_by('-date')
 
     def get_context_data(self, **kwargs):
         context = super(Home, self).get_context_data(**kwargs)
         context["all_image"] = Image.objects.all()
         return context
 
-    # def form_valid(self, form):
-    #     form.instance.user = self.request.user
-    #     return super(Home, self).form_valid(form)
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(Home, self).form_valid(form)
 
 
 class Contacts(generic.ListView):
@@ -59,10 +59,24 @@ class AddpostCreateView(generic.CreateView):
     template_name = 'addpost.html'
     form_class = Addposts
     queryset = Addpost.objects.all()
+    success_url = reverse_lazy('dashboard')
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(AddpostCreateView, self).form_valid(form)
+
+    # def save(self, commit=True):
+    #     print(self.cleaned_data ,'*******',self.cleaned_data['image'].name)
+    #     addpost = Addpost.objects.create(title=self.cleaned_data['title'],
+    #                                      desc = self.cleaned_data['desc'],
+    #                                      date = self.cleaned_data['date'],
+    #                                      )
+    #     addpost.save()
+    #     image = Image.objects.create(image = self.cleaned_data['image'],addpost = addpost)
+    #     image.save()
+    #     print(image, addpost, "---4------")
+    #     print("successfully")
+    #     return addpost
 
 
 class AddcontactCreateView(generic.CreateView):
@@ -121,37 +135,13 @@ def loginn(request):
         return HttpResponseRedirect('/login/')
 
 
-# def logoutt(request):
-#     logout(request)
-#     messages.info(request, 'LOGOUT SUCCESSFULLY!!')
-#     return HttpResponseRedirect('/login/')
-
 class LogoutView(generic.View):
     def get(self, request):
         logout(request)
         return HttpResponseRedirect('/login/')
 
 
-# def signupp(request):
-#     if request.method == 'POST':
-#         form = SignUpForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             username = form.cleaned_data.get('username')
-#             raw_password = form.cleaned_data.get('password1')
-#             user = authenticate(username=username, password=raw_password)
-#             login(request, user)
-#             send_mail_func.apply_async(args=[user.email])
-#             # print(send_mail_func)
-#             # subject = 'Welcome to Blog application '
-#             # message = f'Hi {user.username}, Thank you for register.'
-#             # email_from = settings.EMAIL_HOST_USER
-#             # recipient_list = [user.email, ]
-#             # send_mail(subject, message, email_from, recipient_list)
-#             return redirect('home')
-#     else:
-#         form = SignUpForm()
-#     return render(request, 'signup.html', {'form': form})
+# send_mail_func.apply_async(args=[user.email])
 
 class SignUpView(generic.CreateView):
     form_class = SignUpForm
@@ -189,7 +179,14 @@ class Comments(generic.ListView):
     context_object_name = "data"
 
     def get_queryset(self):
-        return self.model.objects.all().order_by('-comment')
+        print (self.request.user)
+        self.request.user
+        data = Comment.objects.all().order_by('-comment')
+        return data
+
+    # def get_queryset(self):
+    #     print(self.request.user)
+    #     return Comment.objects.filter(user=self.request.user)
 
 
 class AddcommentCreateView(generic.CreateView):
@@ -197,22 +194,28 @@ class AddcommentCreateView(generic.CreateView):
     form_class = CommentForm
     queryset = Comment.objects.all()
 
-    def from_valid(self, form):
-        self.request.user
-        print(form.cleaned_data)
-        return super().from_valid(form)
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(AddcommentCreateView, self).form_valid(form)
 
 def allimage(request, pk):
     images = Image.objects.filter(addpost__pk=pk)
     return render(request, 'allimage.html', {'images': images})
 
-class Allimage(generic.TemplateView):
-	template_name = 'allimage.html'
+# class Allimage(generic.TemplateView):
+#     model = Image
+#     template_name = 'allimage.html'
+#     context_object_name = 'images'
 
-	def get_context_data(self, *args, **kwargs):
-		context = super(Allimage, self).get_context_data(*args, **kwargs)
-		context['image'] = Image.objects.filter(addpost__pk=pk)
-		return context
+
+# class Allimage(generic.ListView):
+#     template_name = 'allimage.html'
+
+#     def get_context_data(self, pk, *args, **kwargs):
+#         print(pk)
+#         context = super(Allimage, self).get_context_data(*args, **kwargs)
+#         context['image'] = images = Image.objects.filter(addpost__pk=pk)
+#         return context
 
 
 # class AllimageDetailView(generic.DetailView):
@@ -224,18 +227,10 @@ class Allimage(generic.TemplateView):
 #         image = Image.objects.filter(addpost__pk=pk)
 
 
-def deletes(request, pk):
-    uid = Addpost.objects.get(id=pk)
-    uid.delete()
-    return HttpResponseRedirect('/dashboard/')
-
-
-# class deleteDeleteView(generic.DeleteView):
-#     template_name = "delete.html"
-    
-#     def get_object(self):
-#         id_ = self.kwargs.get('id')
-#         return get_object_or_404(Addpost, id=id_)
+class Deletes(generic.DeleteView):
+    model = Addpost
+    success_url = reverse_lazy('dashboard')
+    template_name = "delete.html"
 
 def likeBlog(request, pk):
     blog = Addpost.objects.get(id=pk)

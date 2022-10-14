@@ -50,10 +50,13 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.instagram',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.github',
+    # 'django-crispy-forms',
     # 'django_celery_beat',
     # 'admin_auto_filters.filters',
      
 ]
+
+CRISPY_TEMPLATE_PACK = 'uni_form'
 
 SITE_ID = 1
 
