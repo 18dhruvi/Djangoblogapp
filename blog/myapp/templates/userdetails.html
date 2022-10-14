@@ -41,10 +41,14 @@
         </style>
 </head>
 <body>
-  <h2>User Details</h2>
-  <form role="form" method="POST">
-    {% csrf_token %}
-    {{data.as_p}}
-</form>
+  <h2><u>User Details</u></h2>
+ 
+    <h2>Username:{{data.user}}</h2>
+    <h2>Fname:{{data.fname}}</h2>
+    <h2>Lname:{{data.lname}}</h2>
+    <h2>Country:{{data.country}}</h2>
+
+    {% comment %} {{data.as_p}} {% endcomment %}
+
 </body>
 </html>

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import truncatechars
+from django.urls import reverse
 # from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
@@ -12,6 +13,9 @@ class Addpost(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, related_name="add_post")
     like = models.IntegerField(default=0)
+    
+    def get_absolute_url(self):
+        return reverse('dashboard')
 
     class Meta:
         verbose_name = "Addpost"
@@ -22,7 +26,7 @@ class Addpost(models.Model):
 
 class Image(models.Model):
     image = models.ImageField(upload_to="images/")
-    addpost = models.ForeignKey(Addpost, on_delete=models.CASCADE, null=True)
+    addpost = models.ForeignKey(Addpost, on_delete=models.CASCADE, null=True, related_name="image")
 
     def __str__(self): 
         return self.addpost.title
@@ -34,6 +38,9 @@ class Contact(models.Model):
     lname = models.CharField(max_length=15)
     country = models.CharField(max_length=15)
     date = models.DateField(auto_now_add=True)
+    
+    def get_absolute_url(self):
+        return reverse('contacts')
 
     def __str__(self):
         return self.fname
@@ -44,6 +51,9 @@ class Comment(models.Model):
     title = models.ForeignKey(Addpost, on_delete=models.CASCADE, null=True)
     comment = models.CharField(max_length=75)
     created_on = models.DateTimeField(auto_now_add=True)
+    
+    def get_absolute_url(self):
+        return reverse('comments')
 
     def __str__(self):
         return self.title.title

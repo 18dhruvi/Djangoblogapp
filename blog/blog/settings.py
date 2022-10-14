@@ -13,8 +13,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 from celery import Celery
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# from __future__ import absolute_import
+# from .celery import app as celery_app
 
 
 # Quick-start development settings - unsuitable for production
@@ -39,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myapp',
-   
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -49,6 +50,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.instagram',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.github',
+    # 'django_celery_beat',
+    # 'admin_auto_filters.filters',
      
 ]
 
@@ -185,14 +188,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'rajanidhruvi9@gmail.com'
-EMAIL_HOST_PASSWORD = 'vobqwgwuojkevpdp'
-DEFAULT_FROM_EMAIL='Celery <rajanidhruvi9@gmail.com>'
-
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST_USER="zeel.tagline@gmail.com"
+EMAIL_HOST_PASSWORD="rnlsvywjlktjjbpt"
+EMAIL_HOST="smtp.gmail.com"
+EMAIL_USE_TLS=True
+EMAIL_PORT=587
+DEFAULT_FROM_EMAIL="zeel.tagline@gmail.com"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -215,35 +217,18 @@ AUTHENTICATION_BACKENDS = [
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_LOGOUT_URL = "/account_login"
 
-# CELERY SETTINGS
 
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Asia/Kolkata'
-
-CELERY_RESULT_BACKEND = 'django-db'
 
 #CELERY BEAT
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+# CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
-# SMTP Settings
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = "smtp.gmail.com"
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER ='hemil.tagline@gmail.com'
-# EMAIL_HOST_PASSWORD = "icngdxxjfxzxgcpr"
-# DEFAULT_FROM_EMAIL = 'Celery <priyanshuguptacontact@gmail.com>'
-
-# 727828575880-691q1fm9harvabmdm3tinnrgqklf9kpp.apps.googleusercontent.com
-# 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
-
-
-# 812657666542570
-# fa4f82c09bb2a0a04f519b5741a68d89
-
+# Celery settings
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/kolkata'
 
 
 # github = 8985ad54a885a15c98f5
@@ -251,3 +236,10 @@ CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # fb = 2503174489853784
 # db1f33ad11932ba571e7d61a07612c5b
+
+CELERY_BEAT_SCHEDULE = {
+    'add-every-30-seconds': {
+        'task': 'myapp.tasks.add',
+        'schedule': 5.0,
+    }
+}

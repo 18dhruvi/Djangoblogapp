@@ -1,0 +1,19 @@
+{% block content %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <form method="POST">
+      {% csrf_token %}
+
+      <p>Are you sure you want to delete "{{ object }}"?</p>
+      {% comment %} <p>Are you sure you want to delete "{{ object }}"?</p> {% endcomment %}
+
+
+      <input type="submit" value="Confirm" />
+    </form>
+  </body>
+</html>
+{% endblock content %}

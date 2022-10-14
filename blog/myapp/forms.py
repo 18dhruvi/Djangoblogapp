@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from .models import *
 
 
+
 class SignUpForm(UserCreationForm):
     password1 = forms.CharField(label='password', widget=forms.PasswordInput())
     password2 = forms.CharField(
@@ -25,14 +26,6 @@ class EditProfile(UserChangeForm):
         fields = []
 
 
-class Addposts(forms.ModelForm):
-    class Meta:
-        model = Addpost
-        fields = ['title', 'desc', 'date']
-        exclude = ['likes']
-     # image = forms.ImageField(label='image',widget=forms.ClearableFileInput(attrs={"multiple": True}),)
-
-
 class ImageForm(forms.ModelForm):
     image = forms.ImageField(
         label='image',
@@ -41,6 +34,23 @@ class ImageForm(forms.ModelForm):
     class Meta:
         model = Image
         fields = ['image']
+        
+
+class Addposts(ImageForm):  
+    
+    # def __init__(self,*args, **kwargs):
+    #     super(Addposts, self).__init__(*args, **kwargs)
+  
+    class Meta:
+        model = Addpost
+        fields = ['title', 'desc', 'date']
+        exclude = ['likes']
+     # image = forms.ImageField(label='image',widget=forms.ClearableFileInput(attrs={"multiple": True}),)
+     
+
+         
+     
+
 
 
 class ContactsForm(forms.ModelForm):
