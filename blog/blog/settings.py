@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from celery import Celery
 BASE_DIR = Path(__file__).resolve().parent.parent
+print(BASE_DIR)
 
 # from __future__ import absolute_import
 # from .celery import app as celery_app
@@ -127,7 +128,7 @@ ROOT_URLCONF = 'blog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "blog/templates/")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -187,10 +188,18 @@ USE_L10N = True
 USE_TZ = True
 
 
+STATIC_URL = "/static/"
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+# STATIC_URL = 'static/'
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST_USER="zeel.tagline@gmail.com"
 EMAIL_HOST_PASSWORD="rnlsvywjlktjjbpt"
@@ -202,9 +211,7 @@ DEFAULT_FROM_EMAIL="zeel.tagline@gmail.com"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATICFILES_DIRS = (
-    os.path.join(STATIC_URL, 'static'),
-)
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

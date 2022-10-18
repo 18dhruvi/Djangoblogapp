@@ -18,18 +18,18 @@ from django.shortcuts import get_object_or_404
 # Create your views here.
 class Home(generic.ListView):
     model = Addpost
-    paginate_by = 5
+    paginate_by = 4
     template_name = 'home.html'
     context_object_name = "data"
 
     def get_queryset(self):
         return super(Home, self).get_queryset().order_by('-date')
 
-    def get_context_data(self, **kwargs):
-        context = super(Home, self).get_context_data(**kwargs)
-        context["all_image"] = Image.objects.all()
-        print(context["all_image"])
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super(Home, self).get_context_data(**kwargs)
+    #     print(context)
+    #     context["all_image"] = Image.objects.all()
+    #     return context
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -143,14 +143,14 @@ class TitleDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         instance = self.get_object()
-        all_image = Image.objects.filter(addpost=instance)
+        # all_image = Image.objects.filter(addpost=instance)
         context = super().get_context_data(**kwargs)
         post = Addposts(instance=instance)
         data = Comment.objects.filter(title__title=instance.title)
 
         context['post'] = post
         context['data'] = data
-        context['all_image'] = all_image
+        # context['all_image'] = all_image
         return context
 
 
