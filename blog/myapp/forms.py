@@ -3,6 +3,10 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, User
 from django.contrib.auth.models import User
 from .models import *
 
+from django.core.files.base import ContentFile
+import io
+from django.core.files.images import ImageFile
+
 
 
 class SignUpForm(UserCreationForm):
@@ -33,24 +37,46 @@ class ImageForm(forms.ModelForm):
 
     class Meta:
         model = Image
-        fields = ['image']
+        fields = ['image','addpost']
         
 
-class Addposts(ImageForm):  
-    
-    # def __init__(self,*args, **kwargs):
-    #     super(Addposts, self).__init__(*args, **kwargs)
+class Addposts(forms.ModelForm):  
+    images = forms.ImageField(
+        label='image',
+        widget=forms.ClearableFileInput(attrs={"multiple": True}))
   
     class Meta:
         model = Addpost
-        fields = ['title', 'desc', 'date']
+        fields = ['title', 'desc', 'date', 'images']
         exclude = ['likes']
-     # image = forms.ImageField(label='image',widget=forms.ClearableFileInput(attrs={"multiple": True}),)
      
-
-         
-     
-
+    def save(self, commit=True):
+        images = self.cleaned_data.pop('images')
+        data = super(Addposts, self).save(commit=False)
+        if commit:
+            data.save()
+            print(images)
+            # if len(images) == 1:
+            Image.objects.create(image=images, addpost=data)
+            # else:
+                # for image in images:
+                #     img = ImageFile(io.BytesIO(image), name=f"{data.title}.jpg")
+        return data
+  
+    # def save(self, commit=True):
+    #     print()
+    #     print(self.cleaned_data ,'*******',self.cleaned_data['image'].name)
+    #     addpost = Addpost.objects.create(title=self.cleaned_data['title'],
+    #                                      desc = self.cleaned_data['desc'],
+    #                                      date = self.cleaned_data['date'],
+    #                                      )
+    #     addpost.save()
+    #     image = Image.objects.create(image = self.cleaned_data['image'],addpost = addpost)
+    #     image.save()
+    #     print(image, addpost, "------4-------") 
+    #     print("successfully")
+    #     return addpost
+        
 
 
 class ContactsForm(forms.ModelForm):

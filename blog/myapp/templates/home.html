@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 {% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> {% endcomment %}
     {% comment %} <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"> {% endcomment %}
@@ -22,7 +22,8 @@
               {% for datas in data %}  
                 <div class="col-md-3" align="center">
                     <div class="card" style="width:100%" "height:100" align="center">
-                        <img src="{{ datas.image_set.all.0.image.url }}" class="card-img-top" alt="">
+                      <p>{{datas.image_set.all.0.image.url}}</p>
+                        <img src="{{ datas.image_set.all.0.image.url  }}" class="card-img-top" alt="">
                         <div class="card-body">
                         {% if request.user.is_authenticated %}
                         <h5 class="card-title"><a href="{% url 'title' datas.id %}">{{datas.title}}</h5></a>
@@ -45,22 +46,8 @@
         <br>
         <br>
 
-         {% comment %} {% if is_paginated %}
-    <div>
-    <span>
-        {% if page_obj.has_previous %}
-            <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
-        <span>
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-        {% if page_obj.has_next %}
-            <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
-        {% endif %}
-    </span>
-    </div>
-    {% endif %} {% endcomment %}
-{% if data.has_other_pages %}
+    
+{% comment %} {% if data.has_other_pages %}
   <ul class="pagination">
     {% if data.has_previous %}
       <li><a href="?page={{ data.previous_page_number }}">&laquo;</a></li>
@@ -80,7 +67,21 @@
       <li class="disabled"><span>&raquo;</span></li>
     {% endif %}
   </ul>
-{% endif %} 
+{% endif %}  {% endcomment %}
+
+  <div class='pagination'>
+  {% if page_obj.has_previous %}
+    <a href='{% url "home" %}?page={{ page_obj.previous_page_number }}'>Previous </a>
+  {% endif %}
+
+  <span class='mx-4'>
+    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+  </span>
+
+  {% if page_obj.has_next %}
+    <a href='{% url "home" %}?page={{ page_obj.next_page_number }}' > Next</a>
+  {% endif %}
+</div>
     </div><br>
   </body>
   </html>
