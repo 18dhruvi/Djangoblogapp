@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.instagram',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.github',
-    # 'django-crispy-forms',
+    'crispy_forms',
     # 'django_celery_beat',
     # 'admin_auto_filters.filters',
      
@@ -246,3 +246,5 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': 5.0,
     }
 }
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

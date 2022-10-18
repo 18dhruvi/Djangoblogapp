@@ -28,6 +28,7 @@ class Home(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(Home, self).get_context_data(**kwargs)
         context["all_image"] = Image.objects.all()
+        print(context["all_image"])
         return context
 
     def form_valid(self, form):
@@ -64,20 +65,6 @@ class AddpostCreateView(generic.CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(AddpostCreateView, self).form_valid(form)
-
-    # def save(self, commit=True):
-    #     print(self.cleaned_data ,'*******',self.cleaned_data['image'].name)
-    #     addpost = Addpost.objects.create(title=self.cleaned_data['title'],
-    #                                      desc = self.cleaned_data['desc'],
-    #                                      date = self.cleaned_data['date'],
-    #                                      )
-    #     addpost.save()
-    #     image = Image.objects.create(image = self.cleaned_data['image'],addpost = addpost)
-    #     image.save()
-    #     print(image, addpost, "---4------")
-    #     print("successfully")
-    #     return addpost
-
 
 class AddcontactCreateView(generic.CreateView):
     template_name = 'addcontact.html'
@@ -179,14 +166,22 @@ class Comments(generic.ListView):
     context_object_name = "data"
 
     def get_queryset(self):
-        print (self.request.user)
+        print(self.request.user)
         self.request.user
         data = Comment.objects.all().order_by('-comment')
         return data
 
-    # def get_queryset(self):
-    #     print(self.request.user)
-    #     return Comment.objects.filter(user=self.request.user)
+class Allimage(generic.ListView):
+    model = Image
+    template_name = 'allimage.html'
+    context_object_name = 'images'
+    # queryset = Image.objects.all()
+
+    def get_queryset(self):
+        add_post = self.kwargs.get("pk")
+        images = Image.objects.filter(addpost__id=add_post)
+        print(images)
+        return images
 
 
 class AddcommentCreateView(generic.CreateView):
@@ -198,39 +193,13 @@ class AddcommentCreateView(generic.CreateView):
         form.instance.user = self.request.user
         return super(AddcommentCreateView, self).form_valid(form)
 
-def allimage(request, pk):
-    images = Image.objects.filter(addpost__pk=pk)
-    return render(request, 'allimage.html', {'images': images})
-
-# class Allimage(generic.TemplateView):
-#     model = Image
-#     template_name = 'allimage.html'
-#     context_object_name = 'images'
-
-
-# class Allimage(generic.ListView):
-#     template_name = 'allimage.html'
-
-#     def get_context_data(self, pk, *args, **kwargs):
-#         print(pk)
-#         context = super(Allimage, self).get_context_data(*args, **kwargs)
-#         context['image'] = images = Image.objects.filter(addpost__pk=pk)
-#         return context
-
-
-# class AllimageDetailView(generic.DetailView):
-#     model = Image
-#     context_object_name = 'images'
-#     template_name = 'allimage.html'
-
-#     def get_context_data(self, **kwargs):
-#         image = Image.objects.filter(addpost__pk=pk)
 
 
 class Deletes(generic.DeleteView):
     model = Addpost
     success_url = reverse_lazy('dashboard')
     template_name = "delete.html"
+
 
 def likeBlog(request, pk):
     blog = Addpost.objects.get(id=pk)

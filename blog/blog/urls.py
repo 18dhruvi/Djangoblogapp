@@ -42,6 +42,6 @@ urlpatterns = [
     path('addcontact/', views.AddcontactCreateView.as_view(), name='addcontact'),
     path('addcomment/', views.AddcommentCreateView.as_view(), name='addcomment'),
     path('edit/<int:pk>/', views.EdittView.as_view(), name='edit'),
-    path('allimage/<int:pk>', views.allimage, name='allimage'),
+    path('allimage/<int:pk>', views.Allimage.as_view(), name='allimage'),
     path('<int:pk>/delete/', views.Deletes.as_view(), name='delete'),
 ]+ static(settings.MEDIA_URL ,document_root=settings.MEDIA_ROOT)
