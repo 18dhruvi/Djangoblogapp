@@ -5,18 +5,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'images/favicon_1.ico' %}">
     <link href="{% static 'css/core.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/components.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/icons.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/pages.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/responsive.css' %}" rel="stylesheet" type="text/css" />
     <script src="{% static 'js/modernizr.min.js' %}"></script>
+    
     <title>BLOG</title>
 </head>
 <body><hr>
-    <div class="container-fluid bg-dark">
-        {% include 'navbar.html' %}
+    <div class="animationload">
+        <div class="loader"></div>
     </div>
+    {% include 'navbar.html' %}
+    <div class="container-fluid bg-dark">
+        {% comment %} {% include 'navbar.html' %} {% endcomment %}
+    </div>
+    
     <div class="w-100">
         <div class="row">
             <div class="col-sm-12">
@@ -42,8 +49,6 @@
         <script src="{% static 'js/wow.min.js' %}"></script>
         <script src="{% static 'js/jquery.nicescroll.js' %}"></script>
         <script src="{% static 'js/jquery.scrollTo.min.js' %}"></script>
-
-
         <script src="{% static 'js/jquery.core.js' %}"></script>
         <script src="{% static 'js/jquery.app.js' %}"></script>
 </body>
