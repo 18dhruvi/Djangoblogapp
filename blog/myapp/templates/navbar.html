@@ -1,38 +1,3 @@
-{% comment %} <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-   
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul style="display: flex; gap: 1.5rem">
-        <li class="nav-item" style="list-style: none">
-          <a
-            class="nav-link active"
-            aria-current="page"
-            href="{% url 'home' %}"
-            style="color: black"
-            style="margin-right: 0.5rem">Home</a>
-          </li>
-          {% if request.user.is_authenticated %}
-        <li class="nav-item" style="list-style: none">
-          <a class="nav-link" href="{% url 'dashboard' %}" style="color: black">Dashboard</a>
-        </li>
-        <li class="nav-item" style="list-style: none">
-          <a class="nav-link" href="{% url 'contacts' %}" style="color: black">Contacts</a>
-        </li>
-        <li class="nav-item" style="list-style: none">
-          <a class="nav-link" href="{% url 'logout' %}" style="color: black">Logout</a>
-        </li>
-        {% else %}
-        <li class="nav-item" style="list-style: none">
-          <a class="nav-link" href="{% url 'signup' %}" style="color: black">Signup</a>
-        </li>
-        <li class="nav-item" style="list-style: none">
-          <a class="nav-link" href="{% url 'login' %}" style="color: black">Login</a >
-        </li>
-        {% endif %}
-      </ul>
-    </div>
-  </div>
-</nav> {% endcomment %}
 
 {% load static %}
   <!DOCTYPE html>
@@ -203,12 +168,18 @@
                                     <a href="#" class="right-bar-toggle waves-effect"><i class="icon-settings"></i></a>
                                 </li>
                                 <li class="dropdown">
-                                    <a href="" class="dropdown-toggle profile waves-effect" data-toggle="dropdown" aria-expanded="true"><img src="assets/images/users/avatar-1.jpg" alt="user-img" class="img-circle"> </a>
+                                    <a href="" class="dropdown-toggle profile waves-effect" data-toggle="dropdown" aria-expanded="true"><img src="static/images/users/1.jpeg" alt="user-img" class="img-circle"> </a>
+
                                     <ul class="dropdown-menu">
                                         <li><a href="javascript:void(0)"><i class="ti-user m-r-5"></i> Profile</a></li>
                                         <li><a href="javascript:void(0)"><i class="ti-settings m-r-5"></i> Settings</a></li>
                                         <li><a href="javascript:void(0)"><i class="ti-lock m-r-5"></i> Lock screen</a></li>
-                                        <li><a href="javascript:void(0)"><i class="ti-power-off m-r-5"></i> Logout</a></li>
+                                        {% if request.user.is_authenticated %}
+                                        <li><a href="{% url 'logout' %}"><i class="ti-power-off m-r-5"></i> Logout</a></li>
+                                        {% else %}
+                                        <li><a href="{% url 'login' %}"><i class="ti-power-off m-r-5"></i> Logout</a></li>
+                                        {% endif %}
+                                        
                                     </ul>
                                 </li>
                             </ul>
@@ -484,6 +455,8 @@
                             </div>
                         </div>
                             <!-- Todos app -->
+                            {% block content %}
+                            {% endblock content %}
                         
              
 

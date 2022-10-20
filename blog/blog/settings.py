@@ -57,7 +57,7 @@ INSTALLED_APPS = [
      
 ]
 
-CRISPY_TEMPLATE_PACK = 'uni_form'
+
 
 SITE_ID = 1
 
