@@ -7,11 +7,7 @@
   <body>
     <form method="POST">
       {% csrf_token %}
-
       <p>Are you sure you want to delete "{{ object }}"?</p>
-      {% comment %} <p>Are you sure you want to delete "{{ object }}"?</p> {% endcomment %}
-
-
       <input type="submit" value="Confirm" />
     </form>
   </body>

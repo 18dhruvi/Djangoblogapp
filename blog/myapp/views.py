@@ -36,15 +36,6 @@ class Home(generic.ListView):
         return super(Home, self).form_valid(form)
 
 
-class Contacts(generic.ListView):
-    model = Contact
-    template_name = 'contacts.html'
-    context_object_name = "data"
-
-    def get_queryset(self):
-        self.request.user
-        return self.model.objects.all().order_by('-date')
-
 
 class Dashboard(generic.ListView):
     model = Addpost
@@ -65,11 +56,6 @@ class AddpostCreateView(generic.CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(AddpostCreateView, self).form_valid(form)
-
-class AddcontactCreateView(generic.CreateView):
-    template_name = 'addcontact.html'
-    form_class = ContactsForm
-    queryset = Contact.objects.all()
 
 
 class EdittView(generic.UpdateView):
@@ -154,22 +140,21 @@ class TitleDetailView(generic.DetailView):
         return context
 
 
-class UserdetailsDetailView(generic.DetailView):
-    model = Contact
-    template_name = 'userdetails.html'
-    context_object_name = "data"
+# class UserdetailsDetailView(generic.DetailView):
+#     model = Contact
+#     template_name = 'userdetails.html'
+#     context_object_name = "data"
+    
+def userdetails(request, pk):
+    # detail = Contact.objects.get(user__id=pk)
+    detail = Contact.objects.filter(user__id=pk).first()
+    data = ContactsForm(instance=detail)
+    if request.method == 'POST':
+        data1 = ContactsForm(request.POST, instance=detail)
+    else:
+        return render(request, 'userdetails.html', {'data': data, })
 
 
-class Comments(generic.ListView):
-    model = Comment
-    template_name = 'comments.html'
-    context_object_name = "data"
-
-    def get_queryset(self):
-        print(self.request.user)
-        self.request.user
-        data = Comment.objects.all().order_by('-comment')
-        return data
 
 class Allimage(generic.ListView):
     model = Image
@@ -184,17 +169,51 @@ class Allimage(generic.ListView):
         return images
 
 
+
+class Comments(generic.ListView):
+    model = Comment
+    template_name = 'comments.html'
+    context_object_name = "data"
+
+    def get_queryset(self):
+        print(self.request.user)
+        self.request.user
+        data = Comment.objects.all().order_by('-comment')
+        return data
+    
 class AddcommentCreateView(generic.CreateView):
     template_name = 'addcomment.html'
     form_class = CommentForm
     queryset = Comment.objects.all()
 
     def form_valid(self, form):
+        print("*"*100)
         form.instance.user = self.request.user
         return super(AddcommentCreateView, self).form_valid(form)
 
+class Contacts(generic.ListView):
+    model = Contact
+    template_name = 'contacts.html'
+    context_object_name = "data"
+
+    def get_queryset(self):
+        print(self.request.user)
+        self.request.user
+        data = Contact.objects.all().order_by('-date')
+        return data
 
 
+class AddcontactCreateView(generic.CreateView):
+    template_name = 'addcontact.html'
+    form_class = ContactsForm
+    queryset = Contact.objects.all()
+    
+    def form_valid(self, form):
+        print("*"*100)
+        form.instance.user = self.request.user
+        return super(AddcontactCreateView, self).form_valid(form)
+    
+    
 class Deletes(generic.DeleteView):
     model = Addpost
     success_url = reverse_lazy('dashboard')
