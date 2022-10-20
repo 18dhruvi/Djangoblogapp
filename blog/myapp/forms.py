@@ -6,13 +6,27 @@ from .models import *
 from django.core.files.base import ContentFile
 import io
 from django.core.files.images import ImageFile
-
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Fieldset, Submit
+from crispy_forms.layout import Button
 
 
 class SignUpForm(UserCreationForm):
     password1 = forms.CharField(label='password', widget=forms.PasswordInput())
     password2 = forms.CharField(
         label='conform password', widget=forms.PasswordInput())
+    
+    helper = FormHelper()
+    helper.add_input(Submit("submit", "Submit", css_class="btn-primary"))
+    helper.add_input(
+        Button(
+            "cancel",
+            "Cancel",
+            css_class="btn",
+            onclick=f"javascript:location.href = '';",
+        )
+    )
+    helper.form_method = "POST"
 
     class Meta:
         model = User
